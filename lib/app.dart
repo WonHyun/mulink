@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mulink/ui/screen/home_screen.dart';
+import 'package:mulink/ui/home/home_screen.dart';
 
 class App extends StatelessWidget {
   const App({super.key});

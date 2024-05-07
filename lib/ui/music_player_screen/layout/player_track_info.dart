@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mulink/controller/playlist_controller.dart';
 import 'package:mulink/ui/common/overflow_marquee.dart';
-import 'package:mulink/ui/player/component/album_cover_image.dart';
+import 'package:mulink/ui/music_player_screen/component/album_cover_image.dart';
 
 class PlayerTrackInfo extends StatelessWidget {
   const PlayerTrackInfo({

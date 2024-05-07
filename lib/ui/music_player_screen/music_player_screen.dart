@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mulink/controller/player_controller.dart';
 import 'package:mulink/controller/playlist_controller.dart';
-import 'package:mulink/ui/player/layout/audio_progress_bar.dart';
-import 'package:mulink/ui/player/layout/extra_controll_panel.dart';
+import 'package:mulink/ui/music_player_screen/layout/audio_progress_bar.dart';
+import 'package:mulink/ui/music_player_screen/layout/extra_controll_panel.dart';
 
 import 'layout/player_controll_panel.dart';
 import 'layout/player_track_info.dart';
 
-class MusicPlayer extends StatelessWidget {
-  const MusicPlayer({
+class MusicPlayerScreen extends StatelessWidget {
+  const MusicPlayerScreen({
     super.key,
   });
 
