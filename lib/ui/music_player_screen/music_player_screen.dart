@@ -32,15 +32,17 @@ class MusicPlayerScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            PlayerTrackInfo(playlistController: playlistController),
-            const SizedBox(height: 20),
-            ExtraControllPanel(controller: playerController),
-            AudioProgressBar(controller: playerController),
-            MediaControllPanel(controller: playerController),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              PlayerTrackInfo(playlistController: playlistController),
+              const SizedBox(height: 20),
+              ExtraControllPanel(controller: playerController),
+              AudioProgressBar(controller: playerController),
+              MediaControllPanel(controller: playerController),
+            ],
+          ),
         ),
       ),
     );
