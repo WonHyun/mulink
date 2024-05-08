@@ -78,7 +78,12 @@ class PlaylistController extends GetxController {
           final metadata = await MetadataRetriever.fromFile(entity);
           Track track = Track(
             id: uuid.v4(),
-            title: getFileName(entity.path),
+            title: metadata.trackName ?? getFileName(entity.path),
+            artist: metadata.trackArtistNames?.first,
+            album: metadata.albumName,
+            genre: metadata.genre,
+            mediaType: MediaType.file,
+            albumCover: metadata.albumArt,
             extras: {
               "filePath": entity.path,
             },

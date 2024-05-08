@@ -21,6 +21,7 @@ class PlayerTrackInfo extends StatelessWidget {
             AlbumCoverImage(
               maxWidth: 300,
               imgPath: playlistController.currentPlayTrack?.artUri?.path,
+              albumCoverData: playlistController.currentPlayTrack?.albumCover,
             ),
             const SizedBox(height: 30),
             OverflowMarquee(

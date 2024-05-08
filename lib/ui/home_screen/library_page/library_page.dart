@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mulink/controller/playlist_controller.dart';
@@ -71,6 +73,7 @@ class PlaylistItem extends StatelessWidget {
                     children: [
                       MediaThumbImage(
                         imagePath: track?.artUri?.path,
+                        albumCoverData: track?.albumCover,
                       ),
                       const SizedBox(width: 20),
                       Expanded(child: MediaThumbInfo(track: track)),
@@ -122,11 +125,13 @@ class MediaThumbImage extends StatelessWidget {
   const MediaThumbImage({
     super.key,
     required this.imagePath,
+    this.albumCoverData,
     this.size = 50,
   });
 
   final double? size;
   final String? imagePath;
+  final Uint8List? albumCoverData;
 
   @override
   Widget build(BuildContext context) {
@@ -134,10 +139,16 @@ class MediaThumbImage extends StatelessWidget {
       width: size,
       height: size,
       decoration: BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage(imagePath ?? "assets/images/basic_artwork.png"),
-          fit: BoxFit.cover,
-        ),
+        image: albumCoverData != null
+            ? DecorationImage(
+                image: MemoryImage(albumCoverData!),
+                fit: BoxFit.cover,
+              )
+            : DecorationImage(
+                image:
+                    AssetImage(imagePath ?? "assets/images/basic_artwork.png"),
+                fit: BoxFit.cover,
+              ),
         borderRadius: BorderRadius.circular(10),
       ),
     );

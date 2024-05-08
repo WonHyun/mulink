@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:audio_service/audio_service.dart';
 
 enum MediaType {
@@ -8,7 +10,7 @@ enum MediaType {
 class Track extends MediaItem {
   bool isFavorite;
   MediaType mediaType;
-  String? albumArtPath;
+  Uint8List? albumCover;
   String? filePath;
 
   Track({
@@ -28,7 +30,7 @@ class Track extends MediaItem {
     super.extras,
     this.isFavorite = false,
     this.mediaType = MediaType.file,
-    this.albumArtPath,
+    this.albumCover,
   });
 
   factory Track.fromMediaItem(MediaItem mediaItem) {
