@@ -19,7 +19,7 @@ class PlayerTrackInfo extends StatelessWidget {
         return Column(
           children: [
             AlbumCoverImage(
-              maxWidth: 400,
+              maxWidth: 300,
               imgPath: playlistController.currentPlayTrack?.artUri?.path,
             ),
             const SizedBox(height: 30),
