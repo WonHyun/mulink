@@ -2,6 +2,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mulink/controller/playlist_controller.dart';
+import 'package:mulink/model/track.dart';
 
 class LibraryPage extends StatelessWidget {
   const LibraryPage({
@@ -17,15 +18,14 @@ class LibraryPage extends StatelessWidget {
           child: GetBuilder<PlaylistController>(
             builder: (_) {
               return ListView.builder(
-                itemCount: playlistController.playlist?.length,
+                itemCount: playlistController.playlist.length,
                 itemBuilder: (context, index) {
-                  MediaItem? mediaItem = playlistController.playlist?[index];
+                  Track? track = playlistController.playlist[index];
                   return PlaylistItem(
-                    mediaItem: mediaItem,
-                    callback: (mediaItem) =>
-                        playlistController.setCurrentTrack(mediaItem),
-                    isSelected:
-                        playlistController.currentPlayTrack == mediaItem,
+                    track: track,
+                    callback: (trackItem) =>
+                        playlistController.setCurrentTrack(trackItem),
+                    isSelected: playlistController.currentPlayTrack == track,
                   );
                 },
               );
@@ -40,13 +40,13 @@ class LibraryPage extends StatelessWidget {
 class PlaylistItem extends StatelessWidget {
   const PlaylistItem({
     super.key,
-    required this.mediaItem,
+    required this.track,
     required this.callback,
     this.isSelected = false,
   });
 
-  final MediaItem? mediaItem;
-  final Function(MediaItem?) callback;
+  final Track? track;
+  final Function(Track?) callback;
   final bool isSelected;
 
   @override
@@ -54,7 +54,7 @@ class PlaylistItem extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: GestureDetector(
-        onTap: () => callback(mediaItem),
+        onTap: () => callback(track),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
           decoration: BoxDecoration(
@@ -71,10 +71,10 @@ class PlaylistItem extends StatelessWidget {
                   child: Row(
                     children: [
                       MediaThumbImage(
-                        imagePath: mediaItem?.artUri?.path,
+                        imagePath: track?.artUri?.path,
                       ),
                       const SizedBox(width: 20),
-                      Expanded(child: MediaThumbInfo(mediaItem: mediaItem)),
+                      Expanded(child: MediaThumbInfo(track: track)),
                     ],
                   ),
                 ),
@@ -94,10 +94,10 @@ class PlaylistItem extends StatelessWidget {
 class MediaThumbInfo extends StatelessWidget {
   const MediaThumbInfo({
     super.key,
-    required this.mediaItem,
+    required this.track,
   });
 
-  final MediaItem? mediaItem;
+  final Track? track;
 
   @override
   Widget build(BuildContext context) {
@@ -105,12 +105,12 @@ class MediaThumbInfo extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          mediaItem?.title ?? "<unknown>",
+          track?.title ?? "<unknown>",
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
         Text(
-          mediaItem?.artist ?? "<unknown>",
+          track?.artist ?? "<unknown>",
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),

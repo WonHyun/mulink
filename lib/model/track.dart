@@ -6,10 +6,14 @@ enum MediaType {
 }
 
 class Track extends MediaItem {
+  bool isFavorite;
+  MediaType mediaType;
+  String? albumArtPath;
+  String? filePath;
+
   Track({
     required super.id,
     required super.title,
-    required this.mediaType,
     super.album,
     super.artist,
     super.genre,
@@ -23,12 +27,28 @@ class Track extends MediaItem {
     super.rating,
     super.extras,
     this.isFavorite = false,
+    this.mediaType = MediaType.file,
     this.albumArtPath,
   });
-  bool isFavorite;
-  String? albumArtPath;
-  String? filePath;
-  MediaType mediaType;
+
+  factory Track.fromMediaItem(MediaItem mediaItem) {
+    return Track(
+      id: mediaItem.id,
+      title: mediaItem.title,
+      album: mediaItem.album,
+      artist: mediaItem.artist,
+      genre: mediaItem.genre,
+      duration: mediaItem.duration,
+      artUri: mediaItem.artUri,
+      artHeaders: mediaItem.artHeaders,
+      playable: mediaItem.playable,
+      displayTitle: mediaItem.displayTitle,
+      displaySubtitle: mediaItem.displaySubtitle,
+      displayDescription: mediaItem.displayDescription,
+      rating: mediaItem.rating,
+      extras: mediaItem.extras,
+    );
+  }
 
   //TODO : save setting value (volume, speed...)
 }
