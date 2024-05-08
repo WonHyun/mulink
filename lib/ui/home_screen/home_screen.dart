@@ -22,6 +22,12 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.menu),
+          onPressed: () => {},
+        ),
+      ),
       body: Builder(
         builder: (context) {
           switch (currentPage) {

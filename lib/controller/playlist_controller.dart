@@ -1,7 +1,13 @@
+import 'dart:io';
+
 import 'package:audio_service/audio_service.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:get/get.dart';
 import 'package:mulink/service/audio/mulink_audio_handler.dart';
 import 'package:mulink/service/service_rocator.dart';
+import 'package:mulink/service/util/generator_util.dart';
+import 'package:mulink/service/util/parse_util.dart';
 import 'package:mulink/test/playlist_mock.dart';
 
 class PlaylistController extends GetxController {
@@ -14,7 +20,9 @@ class PlaylistController extends GetxController {
   final _audioHandler = getIt<CustomAudioHandler>();
 
   PlaylistController() {
-    _playlist = playlistMock;
+    // _playlist = playlistMock;
+    _playlist = [];
+    getAudioFilesFromDirectory();
     _listenToChangesInSong();
   }
 
@@ -35,6 +43,13 @@ class PlaylistController extends GetxController {
     });
   }
 
+  void setCurrentTrack(MediaItem? mediaItem) {
+    if (mediaItem != null) {
+      _audioHandler.skipToQueueItem(_playlist?.indexOf(mediaItem) ?? 0);
+      update();
+    }
+  }
+
   void addPlaylist(MediaItem mediaItem) {
     _audioHandler.addQueueItem(mediaItem);
     update();
@@ -47,25 +62,23 @@ class PlaylistController extends GetxController {
     update();
   }
 
-  // Future<void> getAudioFilesFromDirectory() async {
-  //   int index = 1;
-  //   String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
-  //   if (selectedDirectory != null) {
-  //     final dir = Directory(selectedDirectory);
-  //     await for (var entity in dir.list(recursive: false, followLinks: false)) {
-  //       if (entity is File && isAudioFile(entity.path)) {
-  //         Track track = Track(
-  //           id: index.toString().padLeft(5),
-  //           title: getFileName(entity.path),
-  //           mediaType: MediaType.file,
-  //           extras: {
-  //             "filePath": entity.path,
-  //           },
-  //         );
-  //         addPlaylist(track);
-  //         index++;
-  //       }
-  //     }
-  //   }
-  // }
+  Future<void> getAudioFilesFromDirectory() async {
+    String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
+    if (selectedDirectory != null) {
+      final dir = Directory(selectedDirectory);
+      await for (var entity in dir.list(recursive: false, followLinks: false)) {
+        if (entity is File && isAudioFile(entity.path)) {
+          final metadata = await MetadataRetriever.fromFile(entity);
+          MediaItem mediaItem = MediaItem(
+            id: uuid.v4(),
+            title: getFileName(entity.path),
+            extras: {
+              "filePath": entity.path,
+            },
+          );
+          addPlaylist(mediaItem);
+        }
+      }
+    }
+  }
 }
