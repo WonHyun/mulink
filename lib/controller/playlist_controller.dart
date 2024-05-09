@@ -9,7 +9,6 @@ import 'package:mulink/service/audio/mulink_audio_handler.dart';
 import 'package:mulink/service/service_rocator.dart';
 import 'package:mulink/service/util/generator_util.dart';
 import 'package:mulink/service/util/parse_util.dart';
-import 'package:mulink/test/playlist_mock.dart';
 
 class PlaylistController extends GetxController {
   List<Track> _playlist = [];
@@ -23,8 +22,6 @@ class PlaylistController extends GetxController {
   final _audioHandler = getIt<CustomAudioHandler>();
 
   PlaylistController() {
-    // _playlist = playlistMock;
-    getAudioFilesFromDirectory();
     _listenToChangesInSong();
   }
 

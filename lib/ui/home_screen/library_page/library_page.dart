@@ -15,6 +15,10 @@ class LibraryPage extends StatelessWidget {
     final PlaylistController playlistController = Get.find();
     return Column(
       children: [
+        IconButton(
+          onPressed: playlistController.getAudioFilesFromDirectory,
+          icon: const Icon(Icons.folder_open),
+        ),
         Expanded(
           child: GetBuilder<PlaylistController>(
             builder: (_) {
