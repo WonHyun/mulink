@@ -7,6 +7,7 @@ environment:
   sdk: ">=3.3.3 <4.0.0"
 
 dependencies:
+  animations: ^2.0.11
   audio_service: ^0.18.13
   audio_video_progress_bar: ^2.0.2
   file_picker: ^8.0.3
