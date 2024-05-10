@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mulink/ui/home_screen/library_page/library_page.dart';
-import 'package:mulink/ui/music_player_screen/music_player_screen.dart';
 
 enum Page {
   home,
@@ -33,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context) {
           switch (currentPage) {
             case Page.home:
-              return const MusicPlayerScreen();
+              return const Column();
             case Page.library:
               return const LibraryPage();
             case Page.search:

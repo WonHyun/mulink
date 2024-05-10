@@ -5,6 +5,7 @@ import 'package:mulink/controller/playlist_controller.dart';
 import 'package:mulink/ui/common/overflow_marquee.dart';
 import 'package:mulink/ui/home_screen/library_page/playlist_page/component/media_thumb_image.dart';
 import 'package:mulink/ui/music_player_screen/component/play_state_button.dart';
+import 'package:mulink/ui/music_player_screen/music_player_screen.dart';
 
 class MiniPlayer extends StatelessWidget {
   const MiniPlayer({
@@ -16,7 +17,12 @@ class MiniPlayer extends StatelessWidget {
     final PlaylistController playlistController = Get.find();
 
     return GestureDetector(
-      onTap: () => {},
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const MusicPlayerScreen(),
+        ),
+      ),
       child: GetBuilder<PlaylistController>(
         builder: (_) {
           return Container(

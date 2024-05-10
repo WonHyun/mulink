@@ -20,7 +20,7 @@ class MusicPlayerScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () => {},
+          onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.keyboard_arrow_down, size: 30),
         ),
         actions: [
