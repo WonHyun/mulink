@@ -32,6 +32,9 @@ class PlaylistController extends GetxController {
         _playlist = _oldPlaylist.whereType<Track>().toList();
         update();
       }
+      if (_playlist.isNotEmpty && _currentPlayTrack == null) {
+        _currentPlayTrack = _playlist.first;
+      }
     });
     _audioHandler.mediaItem.listen((mediaItem) {
       if (_playlist.isNotEmpty) {
@@ -65,6 +68,28 @@ class PlaylistController extends GetxController {
     _audioHandler.removeQueueItemAt(lastIndex);
   }
 
+  String createTagData(String? data, String alter) {
+    return data == null || data.isEmpty ? alter : data;
+  }
+
+  Future<Track> createTrackFromFile(File file) async {
+    final metadata = await MetadataRetriever.fromFile(file);
+    return Track(
+      id: uuid.v4(),
+      title: createTagData(metadata.trackName, getFileName(file.path)),
+      artist:
+          createTagData(metadata.trackArtistNames?.first, "<unknown artist>"),
+      album: createTagData(metadata.albumName, "<unknown album>"),
+      genre: createTagData(metadata.genre, "<unknown genre>"),
+      mediaType: MediaType.file,
+      albumCover: metadata.albumArt,
+      filePath: file.path,
+      extras: {
+        "filePath": file.path,
+      },
+    );
+  }
+
   Future<void> getAudioFilesFromDirectory() async {
     List<Track> tracks = [];
     String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
@@ -72,21 +97,7 @@ class PlaylistController extends GetxController {
       final dir = Directory(selectedDirectory);
       await for (var entity in dir.list(recursive: false, followLinks: false)) {
         if (entity is File && isAudioFile(entity.path)) {
-          final metadata = await MetadataRetriever.fromFile(entity);
-          Track track = Track(
-            id: uuid.v4(),
-            title: metadata.trackName ?? getFileName(entity.path),
-            artist: metadata.trackArtistNames?.first,
-            album: metadata.albumName,
-            genre: metadata.genre,
-            mediaType: MediaType.file,
-            albumCover: metadata.albumArt,
-            filePath: entity.path,
-            extras: {
-              "filePath": entity.path,
-            },
-          );
-          tracks.add(track);
+          tracks.add(await createTrackFromFile(entity));
         }
       }
     }
