@@ -40,7 +40,7 @@ class MusicPlayerScreen extends StatelessWidget {
               const SizedBox(height: 20),
               ExtraControllPanel(controller: playerController),
               AudioProgressBar(controller: playerController),
-              MediaControllPanel(controller: playerController),
+              PlayerControllPanel(controller: playerController),
             ],
           ),
         ),

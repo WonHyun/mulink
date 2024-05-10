@@ -9,8 +9,8 @@ import '../component/shuffle_button.dart';
 
 import 'dart:math' as math;
 
-class MediaControllPanel extends StatelessWidget {
-  const MediaControllPanel({
+class PlayerControllPanel extends StatelessWidget {
+  const PlayerControllPanel({
     super.key,
     required this.controller,
   });
@@ -43,7 +43,7 @@ class MediaControllPanel extends StatelessWidget {
                 playButtonState: controller.playButtonState,
                 playCallback: controller.play,
                 pauseCallback: controller.pause,
-                iconSize: iconSize,
+                buttonSize: iconSize * 1.5,
               ),
             ),
             IconButton(

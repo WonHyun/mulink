@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class MediaThumbImage extends StatelessWidget {
   const MediaThumbImage({
     super.key,
-    required this.imagePath,
+    this.imagePath,
     this.albumCoverData,
     this.size = 50,
   });

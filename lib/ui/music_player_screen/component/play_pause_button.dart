@@ -5,12 +5,12 @@ class PlayPauseButton extends StatelessWidget {
     super.key,
     required this.callback,
     required this.iconData,
-    required this.iconSize,
+    required this.buttonSize,
   });
 
   final VoidCallback callback;
   final IconData iconData;
-  final double iconSize;
+  final double buttonSize;
 
   @override
   Widget build(BuildContext context) {
@@ -25,13 +25,10 @@ class PlayPauseButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(100),
           splashColor: Colors.cyan,
           onTap: callback.call,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Icon(
-              iconData,
-              color: Colors.white,
-              size: iconSize,
-            ),
+          child: Icon(
+            iconData,
+            color: Colors.white,
+            size: buttonSize / 1.5,
           ),
         ),
       ),
