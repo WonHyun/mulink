@@ -31,6 +31,7 @@ class Track extends MediaItem {
     this.isFavorite = false,
     this.mediaType = MediaType.file,
     this.albumCover,
+    this.filePath,
   });
 
   factory Track.fromMediaItem(MediaItem mediaItem) {

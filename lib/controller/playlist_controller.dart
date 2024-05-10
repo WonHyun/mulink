@@ -81,6 +81,7 @@ class PlaylistController extends GetxController {
             genre: metadata.genre,
             mediaType: MediaType.file,
             albumCover: metadata.albumArt,
+            filePath: entity.path,
             extras: {
               "filePath": entity.path,
             },
