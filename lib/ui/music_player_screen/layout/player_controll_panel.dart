@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mulink/controller/player_controller.dart';
+import 'package:mulink/global/extension/context_extension.dart';
 
 import '../component/play_state_button.dart';
 import '../component/repeat_button.dart';
 import '../component/shuffle_button.dart';
+
+import 'dart:math' as math;
 
 class MediaControllPanel extends StatelessWidget {
   const MediaControllPanel({
@@ -16,6 +19,7 @@ class MediaControllPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final iconSize = math.min(context.deviceWidth / 10, 50.0);
     return GetBuilder<PlayerController>(
       builder: (_) {
         return Row(
@@ -24,12 +28,13 @@ class MediaControllPanel extends StatelessWidget {
             ShuffleButton(
               isShuffled: controller.isShuffled,
               callback: controller.toggleShuffle,
+              iconSize: iconSize,
             ),
             IconButton(
               onPressed: controller.previous,
-              icon: const Icon(
+              icon: Icon(
                 Icons.skip_previous,
-                size: 50,
+                size: iconSize,
               ),
             ),
             Padding(
@@ -38,18 +43,20 @@ class MediaControllPanel extends StatelessWidget {
                 playButtonState: controller.playButtonState,
                 playCallback: controller.play,
                 pauseCallback: controller.pause,
+                iconSize: iconSize,
               ),
             ),
             IconButton(
               onPressed: controller.next,
-              icon: const Icon(
+              icon: Icon(
                 Icons.skip_next,
-                size: 50,
+                size: iconSize,
               ),
             ),
             RepeatButton(
               repeatState: controller.repeatState,
               callback: controller.toggleRepeatMode,
+              iconSize: iconSize,
             ),
           ],
         );

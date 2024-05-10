@@ -9,11 +9,13 @@ class PlayStateButton extends StatelessWidget {
     required this.playButtonState,
     required this.playCallback,
     required this.pauseCallback,
+    required this.iconSize,
   });
 
   final PlayButtonState playButtonState;
   final VoidCallback playCallback;
   final VoidCallback pauseCallback;
+  final double iconSize;
 
   @override
   Widget build(BuildContext context) {
@@ -29,16 +31,19 @@ class PlayStateButton extends StatelessWidget {
             return PlayPauseButton(
               callback: pauseCallback.call,
               iconData: Icons.pause,
+              iconSize: iconSize,
             );
           case PlayButtonState.paused:
             return PlayPauseButton(
               callback: playCallback.call,
               iconData: Icons.play_arrow_outlined,
+              iconSize: iconSize,
             );
           default:
             return PlayPauseButton(
               callback: playCallback.call,
               iconData: Icons.play_arrow_outlined,
+              iconSize: iconSize,
             );
         }
       },

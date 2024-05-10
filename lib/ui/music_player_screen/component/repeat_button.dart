@@ -6,13 +6,16 @@ class RepeatButton extends StatelessWidget {
     super.key,
     required this.repeatState,
     required this.callback,
+    required this.iconSize,
   });
 
   final RepeatState repeatState;
   final VoidCallback callback;
+  final double iconSize;
 
   @override
   Widget build(BuildContext context) {
+    final fontSize = iconSize / 3;
     return IconButton(
       onPressed: callback.call,
       icon: Stack(
@@ -20,7 +23,7 @@ class RepeatButton extends StatelessWidget {
         children: [
           Icon(
             Icons.loop,
-            size: 50,
+            size: iconSize,
             color: repeatState == RepeatState.off
                 ? Colors.grey
                 : Colors.cyan.shade300,
@@ -34,7 +37,7 @@ class RepeatButton extends StatelessWidget {
                   return Text(
                     "A",
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: fontSize,
                       color: Colors.cyan.shade300,
                     ),
                   );
@@ -42,7 +45,7 @@ class RepeatButton extends StatelessWidget {
                   return Text(
                     "1",
                     style: TextStyle(
-                      fontSize: 12,
+                      fontSize: fontSize,
                       color: Colors.cyan.shade300,
                     ),
                   );

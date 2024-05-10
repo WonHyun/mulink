@@ -5,10 +5,12 @@ class PlayPauseButton extends StatelessWidget {
     super.key,
     required this.callback,
     required this.iconData,
+    required this.iconSize,
   });
 
   final VoidCallback callback;
   final IconData iconData;
+  final double iconSize;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,7 @@ class PlayPauseButton extends StatelessWidget {
             child: Icon(
               iconData,
               color: Colors.white,
-              size: 50,
+              size: iconSize,
             ),
           ),
         ),

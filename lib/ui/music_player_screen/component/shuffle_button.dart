@@ -5,16 +5,18 @@ class ShuffleButton extends StatelessWidget {
     super.key,
     required this.isShuffled,
     required this.callback,
+    required this.iconSize,
   });
 
   final bool isShuffled;
   final VoidCallback callback;
+  final double iconSize;
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: callback.call,
-      icon: const Icon(Icons.shuffle, size: 50),
+      icon: Icon(Icons.shuffle, size: iconSize),
       color: isShuffled ? Colors.cyan.shade300 : Colors.grey,
     );
   }
