@@ -17,40 +17,42 @@ class MusicPlayerScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final PlayerController playerController = Get.find();
     final PlaylistController playlistController = Get.find();
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.keyboard_arrow_down, size: 30),
-        ),
-        actions: [
-          IconButton(
-            onPressed: () => {},
-            icon: const Icon(Icons.more_horiz, size: 30),
+    return PopScope(
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: const Icon(Icons.keyboard_arrow_down, size: 30),
           ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 30),
-        child: Column(
-          children: [
-            Flexible(
-              flex: 10,
-              child: PlayerTrackInfo(controller: playlistController),
-            ),
-            Flexible(
-              flex: 1,
-              child: ExtraControllPanel(controller: playerController),
-            ),
-            Flexible(
-              flex: 1,
-              child: AudioProgressBar(controller: playerController),
-            ),
-            Flexible(
-              flex: 2,
-              child: PlayerControllPanel(controller: playerController),
+          actions: [
+            IconButton(
+              onPressed: () => {},
+              icon: const Icon(Icons.more_horiz, size: 30),
             ),
           ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 30),
+          child: Column(
+            children: [
+              Flexible(
+                flex: 10,
+                child: PlayerTrackInfo(controller: playlistController),
+              ),
+              Flexible(
+                flex: 1,
+                child: ExtraControllPanel(controller: playerController),
+              ),
+              Flexible(
+                flex: 1,
+                child: AudioProgressBar(controller: playerController),
+              ),
+              Flexible(
+                flex: 2,
+                child: PlayerControllPanel(controller: playerController),
+              ),
+            ],
+          ),
         ),
       ),
     );
