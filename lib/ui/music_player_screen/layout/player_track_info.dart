@@ -20,10 +20,12 @@ class PlayerTrackInfo extends StatelessWidget {
       builder: (_) {
         return Column(
           children: [
-            Hero(
-              tag: "albumCover",
-              child: AlbumCoverImage(
-                albumCoverData: controller.currentPlayTrack?.albumCover,
+            Flexible(
+              child: Hero(
+                tag: "albumCover",
+                child: AlbumCoverImage(
+                  albumCoverData: controller.currentPlayTrack?.albumCover,
+                ),
               ),
             ),
             const SizedBox(height: 30),

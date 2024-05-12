@@ -21,8 +21,8 @@ class AlbumCoverImage extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         return Container(
-          width: width ?? math.min(constraints.maxWidth, maxSize),
-          height: height ?? math.min(constraints.maxWidth, maxSize),
+          width: width ?? math.min(constraints.biggest.shortestSide, maxSize),
+          height: height ?? math.min(constraints.biggest.shortestSide, maxSize),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             image: albumCoverData != null
