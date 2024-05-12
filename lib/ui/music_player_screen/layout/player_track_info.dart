@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:mulink/controller/playlist_controller.dart';
 import 'package:mulink/ui/common/overflow_marquee.dart';
@@ -18,10 +20,13 @@ class PlayerTrackInfo extends StatelessWidget {
       builder: (_) {
         return Column(
           children: [
-            AlbumCoverImage(
-              maxWidth: 300,
-              imgPath: playlistController.currentPlayTrack?.artUri?.path,
-              albumCoverData: playlistController.currentPlayTrack?.albumCover,
+            Hero(
+              tag: "albumCover",
+              child: AlbumCoverImage(
+                maxWidth: 300,
+                imgPath: playlistController.currentPlayTrack?.artUri?.path,
+                albumCoverData: playlistController.currentPlayTrack?.albumCover,
+              ),
             ),
             const SizedBox(height: 30),
             OverflowMarquee(
