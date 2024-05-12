@@ -23,7 +23,6 @@ class PlayerTrackInfo extends StatelessWidget {
             Hero(
               tag: "albumCover",
               child: AlbumCoverImage(
-                imgPath: controller.currentPlayTrack?.artUri?.path,
                 albumCoverData: controller.currentPlayTrack?.albumCover,
               ),
             ),

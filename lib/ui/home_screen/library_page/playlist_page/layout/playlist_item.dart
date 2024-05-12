@@ -37,7 +37,6 @@ class PlaylistItem extends StatelessWidget {
                   child: Row(
                     children: [
                       MediaThumbImage(
-                        imagePath: track?.artUri?.path,
                         albumCoverData: track?.albumCover,
                       ),
                       const SizedBox(width: 20),

@@ -8,14 +8,12 @@ class AlbumCoverImage extends StatelessWidget {
     this.width,
     this.height,
     this.maxSize = 500,
-    this.imgPath,
     this.albumCoverData,
   });
 
   final double? width;
   final double? height;
   final double maxSize;
-  final String? imgPath;
   final Uint8List? albumCoverData;
 
   @override
@@ -32,9 +30,8 @@ class AlbumCoverImage extends StatelessWidget {
                     image: MemoryImage(albumCoverData!),
                     fit: BoxFit.cover,
                   )
-                : DecorationImage(
-                    image: AssetImage(
-                        imgPath ?? 'assets/images/basic_artwork.png'),
+                : const DecorationImage(
+                    image: AssetImage("assets/images/basic_artwork.png"),
                     fit: BoxFit.cover,
                   ),
           ),
