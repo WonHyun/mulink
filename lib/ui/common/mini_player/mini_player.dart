@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mulink/controller/playlist_controller.dart';
+import 'package:mulink/service/util/image_util.dart';
 import 'package:mulink/ui/common/mini_player/mini_player_controll_panel.dart';
 import 'package:mulink/ui/common/overflow_marquee.dart';
 import 'package:mulink/ui/home_screen/library_page/playlist_page/component/media_thumb_image.dart';
@@ -15,15 +16,18 @@ class MiniPlayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final PlaylistController playlistController = Get.find();
+    BorderRadius borderRadius = BorderRadius.circular(50);
+    Color playerColor =
+        calculateAverageColor(playlistController.currentPlayTrack?.albumCover);
 
     return GetBuilder<PlaylistController>(
       builder: (_) {
         return OpenContainer(
             closedElevation: 0,
-            closedColor: Colors.transparent,
-            middleColor: Colors.transparent,
+            closedColor: playerColor,
+            closedShape: RoundedRectangleBorder(borderRadius: borderRadius),
             openElevation: 0,
-            openColor: Colors.transparent,
+            openColor: playerColor,
             openBuilder: (BuildContext context, VoidCallback _) {
               return const MusicPlayerScreen();
             },
@@ -34,8 +38,8 @@ class MiniPlayer extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 height: 100,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50),
-                  color: Colors.black,
+                  borderRadius: borderRadius,
+                  color: playerColor,
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
