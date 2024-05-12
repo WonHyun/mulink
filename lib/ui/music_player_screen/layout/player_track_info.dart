@@ -9,10 +9,10 @@ import 'package:mulink/ui/music_player_screen/component/album_cover_image.dart';
 class PlayerTrackInfo extends StatelessWidget {
   const PlayerTrackInfo({
     super.key,
-    required this.playlistController,
+    required this.controller,
   });
 
-  final PlaylistController playlistController;
+  final PlaylistController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -23,19 +23,18 @@ class PlayerTrackInfo extends StatelessWidget {
             Hero(
               tag: "albumCover",
               child: AlbumCoverImage(
-                maxWidth: 300,
-                imgPath: playlistController.currentPlayTrack?.artUri?.path,
-                albumCoverData: playlistController.currentPlayTrack?.albumCover,
+                imgPath: controller.currentPlayTrack?.artUri?.path,
+                albumCoverData: controller.currentPlayTrack?.albumCover,
               ),
             ),
             const SizedBox(height: 30),
             OverflowMarquee(
-              text: playlistController.currentPlayTrack?.title ?? "<unknown>",
+              text: controller.currentPlayTrack?.title ?? "<unknown>",
               textStyle: context.textTheme.headlineMedium,
             ),
             const SizedBox(height: 10),
             OverflowMarquee(
-              text: playlistController.currentPlayTrack?.artist ?? "<unknown>",
+              text: controller.currentPlayTrack?.artist ?? "<unknown>",
               textStyle: context.textTheme.bodyMedium,
             ),
           ],
