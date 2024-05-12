@@ -1,10 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:mulink/controller/player_controller.dart';
 import 'package:mulink/controller/playlist_controller.dart';
+import 'package:mulink/global/constant/const.dart';
 import 'package:mulink/service/service_rocator.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 Future<void> initializeApp() async {
@@ -15,6 +18,7 @@ Future<void> initializeApp() async {
   if (!kIsWeb) {
     requestPermissions();
   }
+  await savaBasicArtwork();
 }
 
 Future<void> requestPermissions() async {
@@ -24,5 +28,26 @@ Future<void> requestPermissions() async {
     if (!status.isGranted) {
       await Permission.manageExternalStorage.request();
     }
+  }
+}
+
+Future<void> savaBasicArtwork() async {
+  try {
+    final appDir = await getApplicationDocumentsDirectory();
+    String filePath = '${appDir.path}/$basicArtworkFileName';
+
+    //TODO: need check logic if image file changed
+    File file = File(filePath);
+    if (!await file.exists()) {
+      final byteData = await rootBundle.load(
+        '$basicArtworkAssetPath/$basicArtworkFileName',
+      );
+      await file.writeAsBytes(
+        byteData.buffer
+            .asInt8List(byteData.offsetInBytes, byteData.lengthInBytes),
+      );
+    }
+  } catch (err) {
+    print(err);
   }
 }
