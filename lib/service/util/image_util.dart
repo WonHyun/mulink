@@ -2,7 +2,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart' hide Image;
 import 'package:image/image.dart' as img;
 
-Color calculateAverageColor(Uint8List? imageData) {
+Color calculateAverageColor({Uint8List? imageData, double brightness = 0.5}) {
   if (imageData == null) return Colors.black;
 
   img.Image? image = img.decodeImage(imageData);
@@ -24,5 +24,10 @@ Color calculateAverageColor(Uint8List? imageData) {
   int gAvg = gTotal ~/ pixelCount;
   int bAvg = bTotal ~/ pixelCount;
 
-  return Color.fromRGBO(rAvg, gAvg, bAvg, 1.0);
+  return Color.fromRGBO(
+    (rAvg * brightness).round(),
+    (gAvg * brightness).round(),
+    (bAvg * brightness).round(),
+    1.0,
+  );
 }

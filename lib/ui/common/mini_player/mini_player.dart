@@ -16,12 +16,12 @@ class MiniPlayer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final PlaylistController playlistController = Get.find();
-    BorderRadius borderRadius = BorderRadius.circular(50);
-    Color playerColor =
-        calculateAverageColor(playlistController.currentPlayTrack?.albumCover);
 
     return GetBuilder<PlaylistController>(
       builder: (_) {
+        BorderRadius borderRadius = BorderRadius.circular(50);
+        Color playerColor = calculateAverageColor(
+            imageData: playlistController.currentPlayTrack?.albumCover);
         return OpenContainer(
             closedElevation: 0,
             closedColor: playerColor,
