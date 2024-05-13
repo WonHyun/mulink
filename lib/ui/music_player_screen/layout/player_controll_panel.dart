@@ -35,6 +35,7 @@ class PlayerControllPanel extends StatelessWidget {
               icon: Icon(
                 Icons.skip_previous,
                 size: iconSize,
+                color: context.theme.colorScheme.inverseSurface,
               ),
             ),
             Padding(
@@ -51,6 +52,7 @@ class PlayerControllPanel extends StatelessWidget {
               icon: Icon(
                 Icons.skip_next,
                 size: iconSize,
+                color: context.theme.colorScheme.inverseSurface,
               ),
             ),
             RepeatButton(

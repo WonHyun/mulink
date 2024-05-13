@@ -26,7 +26,7 @@ class PlayStateButton extends StatelessWidget {
         builder: (context) {
           switch (playButtonState) {
             case PlayButtonState.loading:
-              return CircularProgressIndicator(color: Colors.cyan.shade300);
+              return const CircularProgressIndicator();
             case PlayButtonState.playing:
               return PlayPauseButton(
                 callback: pauseCallback.call,

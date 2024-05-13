@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class PlayPauseButton extends StatelessWidget {
   const PlayPauseButton({
@@ -17,17 +18,17 @@ class PlayPauseButton extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.cyan.shade300,
+        color: context.theme.colorScheme.primary,
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(100),
-          splashColor: Colors.cyan,
+          splashColor: context.theme.colorScheme.secondary,
           onTap: callback.call,
           child: Icon(
             iconData,
-            color: Colors.white,
+            color: context.theme.colorScheme.inverseSurface,
             size: buttonSize / 1.5,
           ),
         ),

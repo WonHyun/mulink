@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class ShuffleButton extends StatelessWidget {
   const ShuffleButton({
@@ -17,7 +18,9 @@ class ShuffleButton extends StatelessWidget {
     return IconButton(
       onPressed: callback.call,
       icon: Icon(Icons.shuffle, size: iconSize),
-      color: isShuffled ? Colors.cyan.shade300 : Colors.grey,
+      color: isShuffled
+          ? context.theme.colorScheme.primary
+          : context.theme.colorScheme.inverseSurface,
     );
   }
 }

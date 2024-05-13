@@ -22,15 +22,16 @@ class MusicPlayerScreen extends StatelessWidget {
       child: GetBuilder<PlaylistController>(
         builder: (_) {
           Color trackColor = calculateAverageColor(
-              imageData: playlistController.currentPlayTrack?.albumCover);
+            imageData: playlistController.currentPlayTrack?.albumCover,
+            themeColor: context.theme.colorScheme.surface,
+          );
           return Scaffold(
-            backgroundColor: Colors.transparent,
             body: Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [Colors.black, trackColor],
+                  colors: [context.theme.colorScheme.surface, trackColor],
                 ),
               ),
               child: Column(

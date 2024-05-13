@@ -22,10 +22,6 @@ class AudioProgressBar extends StatelessWidget {
             buffered: controller.progressBarState.buffered,
             total: controller.progressBarState.total,
             onSeek: controller.seek,
-            thumbColor: Colors.cyan.shade300,
-            baseBarColor: Colors.grey.shade700,
-            progressBarColor: Colors.cyan.shade300,
-            bufferedBarColor: Colors.grey,
           );
         },
       ),

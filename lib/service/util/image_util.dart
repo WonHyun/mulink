@@ -2,11 +2,15 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart' hide Image;
 import 'package:image/image.dart' as img;
 
-Color calculateAverageColor({Uint8List? imageData, double brightness = 0.5}) {
-  if (imageData == null) return Colors.black;
+Color calculateAverageColor({
+  Uint8List? imageData,
+  double brightness = 0.5,
+  required Color themeColor,
+}) {
+  if (imageData == null) return themeColor;
 
   img.Image? image = img.decodeImage(imageData);
-  if (image == null) return Colors.black;
+  if (image == null) return themeColor;
 
   int rTotal = 0, gTotal = 0, bTotal = 0;
   int pixelCount = image.width * image.height;

@@ -21,7 +21,9 @@ class MiniPlayer extends StatelessWidget {
       builder: (_) {
         BorderRadius borderRadius = BorderRadius.circular(50);
         Color playerColor = calculateAverageColor(
-            imageData: playlistController.currentPlayTrack?.albumCover);
+          imageData: playlistController.currentPlayTrack?.albumCover,
+          themeColor: context.theme.colorScheme.surface,
+        );
         return OpenContainer(
             closedElevation: 0,
             closedColor: playerColor,

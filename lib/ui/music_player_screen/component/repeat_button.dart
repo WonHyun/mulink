@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mulink/controller/player_controller.dart';
 
 class RepeatButton extends StatelessWidget {
@@ -25,8 +26,8 @@ class RepeatButton extends StatelessWidget {
             Icons.loop,
             size: iconSize,
             color: repeatState == RepeatState.off
-                ? Colors.grey
-                : Colors.cyan.shade300,
+                ? context.theme.colorScheme.inverseSurface
+                : context.theme.colorScheme.primary,
           ),
           Builder(
             builder: (context) {
@@ -38,7 +39,7 @@ class RepeatButton extends StatelessWidget {
                     "A",
                     style: TextStyle(
                       fontSize: fontSize,
-                      color: Colors.cyan.shade300,
+                      color: context.theme.colorScheme.primary,
                     ),
                   );
                 case RepeatState.repeatSong:
@@ -46,7 +47,7 @@ class RepeatButton extends StatelessWidget {
                     "1",
                     style: TextStyle(
                       fontSize: fontSize,
-                      color: Colors.cyan.shade300,
+                      color: context.theme.colorScheme.primary,
                     ),
                   );
                 default:

@@ -18,6 +18,7 @@ class MiniPlayerControllPanel extends StatelessWidget {
             IconButton(
               onPressed: playerController.previous,
               icon: const Icon(Icons.skip_previous),
+              color: context.theme.colorScheme.inverseSurface,
             ),
             PlayStateButton(
               playButtonState: playerController.playButtonState,
@@ -28,6 +29,7 @@ class MiniPlayerControllPanel extends StatelessWidget {
             IconButton(
               onPressed: playerController.next,
               icon: const Icon(Icons.skip_next),
+              color: context.theme.colorScheme.inverseSurface,
             ),
           ],
         );
