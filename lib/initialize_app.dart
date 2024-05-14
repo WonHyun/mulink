@@ -16,7 +16,7 @@ import 'package:permission_handler/permission_handler.dart';
 Future<void> initializeApp() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await dotenv.load(fileName: ".env");
+  await dotenv.load(fileName: "secrets.env");
 
   await setupServiceLocator();
 

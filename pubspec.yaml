@@ -44,7 +44,7 @@ flutter:
     - assets/images/icons/
     - assets/test/
     - assets/fonts/
-    - .env
+    - secrets.env
 
   # fonts:
   #   - family: Schyler
