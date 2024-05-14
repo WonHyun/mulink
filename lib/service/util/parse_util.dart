@@ -8,7 +8,7 @@ bool isAudioFile(String filePath) {
     '.m4a',
     '.flac',
     '.ogg',
-    'm3u',
+    '.m3u',
   ];
   String extension = filePath.split('.').last.toLowerCase();
   return audioExtensions.contains('.$extension');
