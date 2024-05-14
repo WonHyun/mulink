@@ -1,2 +1,2 @@
-const basicArtworkFileName = "basic_artwork.png";
-const basicArtworkAssetPath = "assets/images";
+const basicAlbumArtFileName = "basic_artwork.png";
+const basicAlbumArtAssetPath = "assets/images";

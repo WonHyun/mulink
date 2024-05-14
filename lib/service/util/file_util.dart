@@ -4,17 +4,24 @@ import 'dart:typed_data';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:mulink/global/constant/const.dart';
+import 'package:mulink/global/constant/value.dart';
 import 'package:mulink/model/track.dart';
 import 'package:mulink/service/util/generator_util.dart';
 import 'package:mulink/service/util/parse_util.dart';
-import 'package:path_provider/path_provider.dart';
+
+Future<void> createDirectory(String path) async {
+  final dir = Directory(path);
+  if (!await dir.exists()) {
+    await dir.create(recursive: true);
+  }
+}
 
 Future<List<Track>> getTracksFromDirectory() async {
   List<Track> tracks = [];
   String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
   if (selectedDirectory != null) {
     final dir = Directory(selectedDirectory);
-    await for (var entity in dir.list(recursive: false, followLinks: false)) {
+    await for (var entity in dir.list(recursive: true, followLinks: false)) {
       if (entity is File && isAudioFile(entity.path)) {
         tracks.add(await createTrackFromFile(entity));
       }
@@ -51,11 +58,11 @@ String createTagData(String? data, String alter) {
 
 Future<String> getAlbumArtPath(Uint8List? albumArt, String fileName) async {
   try {
-    Directory appDir = await getApplicationDocumentsDirectory();
+    if (albumArt == null) {
+      return "${AppPath.albumArtPath}/$basicAlbumArtFileName";
+    }
 
-    if (albumArt == null) return "${appDir.path}/$basicArtworkFileName";
-
-    String filePath = "${appDir.path}/$fileName.png";
+    String filePath = "${AppPath.albumArtPath}/$fileName.png";
     File file = File(filePath);
 
     //TODO: need check logic if image file changed

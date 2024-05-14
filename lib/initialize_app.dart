@@ -1,16 +1,20 @@
 import 'dart:io';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:mulink/controller/player_controller.dart';
 import 'package:mulink/controller/playlist_controller.dart';
 import 'package:mulink/global/constant/const.dart';
+import 'package:mulink/global/constant/value.dart';
 import 'package:mulink/service/service_rocator.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:mulink/service/util/file_util.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 Future<void> initializeApp() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await AppPath.init();
   await setupServiceLocator();
   Get.put(PlaylistController());
   Get.put(PlayerController(Get.find()));
@@ -33,14 +37,15 @@ Future<void> requestPermissions() async {
 
 Future<void> savaBasicArtwork() async {
   try {
-    final appDir = await getApplicationDocumentsDirectory();
-    String filePath = '${appDir.path}/$basicArtworkFileName';
+    createDirectory(AppPath.albumArtPath);
+
+    String filePath = "${AppPath.albumArtPath}/$basicAlbumArtFileName";
 
     //TODO: need check logic if image file changed
     File file = File(filePath);
     if (!await file.exists()) {
       final byteData = await rootBundle.load(
-        '$basicArtworkAssetPath/$basicArtworkFileName',
+        '$basicAlbumArtAssetPath/$basicAlbumArtFileName',
       );
       await file.writeAsBytes(
         byteData.buffer
