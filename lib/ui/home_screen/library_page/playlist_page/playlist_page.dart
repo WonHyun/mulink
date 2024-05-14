@@ -22,6 +22,7 @@ class PlaylistPage extends StatelessWidget {
           child: GetBuilder<PlaylistController>(
             builder: (_) {
               return ListView.builder(
+                padding: const EdgeInsets.only(bottom: 110),
                 itemCount: playlistController.playlist.length,
                 itemBuilder: (context, index) {
                   Track? track = playlistController.playlist[index];
