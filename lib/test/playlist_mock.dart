@@ -1,7 +1,8 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mulink/model/track.dart';
 import 'package:mulink/service/util/generator_util.dart';
 
-const googleDriveApiKey = "AIzaSyDpMsfwW29qGDvbw2kFnBn6vYrkcgcWZI0";
+final googleDriveApiKey = dotenv.env["GOOGLE_DRIVE_API_KEY"] ?? "";
 
 String getGoogleDriveUrl(String fileName) {
   return "https://www.googleapis.com/drive/v3/files/$fileName?alt=media&key=$googleDriveApiKey";
@@ -12,7 +13,7 @@ final playlistMock = [
     id: uuid.v4(),
     title: "Cosmic Stars from asia 'kongfu' house inside special l-u-n-c-h set",
     artist: "Dog[house] of progress system provider get riddim",
-    artUri: Uri.file("assets/test/artwork.png"),
+    // artUri: Uri.file("assets/test/artwork.png"),
     extras: {
       "url": "https://s3.amazonaws.com/scifri-segments/scifri201711241.mp3",
     },

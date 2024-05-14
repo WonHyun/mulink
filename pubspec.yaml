@@ -13,6 +13,7 @@ dependencies:
   file_picker: ^8.0.3
   flutter:
     sdk: flutter
+  flutter_dotenv: ^5.1.0
   flutter_media_metadata: ^1.0.0+1
   get: ^4.6.6
   get_it: ^7.7.0
@@ -43,6 +44,7 @@ flutter:
     - assets/images/icons/
     - assets/test/
     - assets/fonts/
+    - .env
 
   # fonts:
   #   - family: Schyler
