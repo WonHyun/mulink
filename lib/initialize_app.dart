@@ -14,12 +14,12 @@ import 'package:permission_handler/permission_handler.dart';
 
 Future<void> initializeApp() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await AppPath.init();
   await setupServiceLocator();
   Get.put(PlaylistController());
   Get.put(PlayerController(Get.find()));
   //TODO : Set Permission, Network, Preference, Auth ...
   if (!kIsWeb) {
+    await AppPath.init();
     requestPermissions();
   }
   await savaBasicArtwork();

@@ -1,4 +1,4 @@
-import 'package:audio_service/audio_service.dart';
+import 'package:mulink/model/track.dart';
 import 'package:mulink/service/util/generator_util.dart';
 
 const googleDriveApiKey = "AIzaSyDpMsfwW29qGDvbw2kFnBn6vYrkcgcWZI0";
@@ -8,7 +8,7 @@ String getGoogleDriveUrl(String fileName) {
 }
 
 final playlistMock = [
-  MediaItem(
+  Track(
     id: uuid.v4(),
     title: "Cosmic Stars from asia 'kongfu' house inside special l-u-n-c-h set",
     artist: "Dog[house] of progress system provider get riddim",
@@ -17,7 +17,7 @@ final playlistMock = [
       "url": "https://s3.amazonaws.com/scifri-segments/scifri201711241.mp3",
     },
   ),
-  MediaItem(
+  Track(
     id: uuid.v4(),
     title: "Breaktime for you",
     artist: "Attrielectrock",
@@ -25,7 +25,7 @@ final playlistMock = [
       "url": getGoogleDriveUrl("18G6gbPoBTNKa0PAik5PCfzmv9GiWNfdK"),
     },
   ),
-  MediaItem(
+  Track(
     id: uuid.v4(),
     title: "NEXT COLOR PLANET (Still Still Stellar ver.)",
     artist: "Suisei Hoshimachi",
@@ -33,7 +33,7 @@ final playlistMock = [
       "url": getGoogleDriveUrl("1jb10kB3a8JAMYHxkTQRNZc4HuUjYRu8C"),
     },
   ),
-  MediaItem(
+  Track(
     id: uuid.v4(),
     title: "Somewhere",
     artist: "F",
@@ -41,7 +41,7 @@ final playlistMock = [
       "url": getGoogleDriveUrl("17GJeljqc7XcANzwt0o0QUiA8Xh6EidjT"),
     },
   ),
-  MediaItem(
+  Track(
     id: uuid.v4(),
     title: "LIES & TIE",
     artist: "Void_Chords",
@@ -49,7 +49,7 @@ final playlistMock = [
       "url": getGoogleDriveUrl("1rCWOzQNWAwDUkaUW1RY7qnFWeXuRkQDK"),
     },
   ),
-  MediaItem(
+  Track(
     id: uuid.v4(),
     title: "White Cup",
     artist: "Attrielectrock",

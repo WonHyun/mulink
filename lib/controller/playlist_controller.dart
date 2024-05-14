@@ -1,9 +1,11 @@
 import 'package:audio_service/audio_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:mulink/service/util/file_util.dart';
 import 'package:get/get.dart';
 import 'package:mulink/model/track.dart';
 import 'package:mulink/service/audio/mulink_audio_handler.dart';
 import 'package:mulink/service/service_rocator.dart';
+// import 'package:mulink/test/playlist_mock.dart';
 
 class PlaylistController extends GetxController {
   List<Track> _playlist = [];
@@ -17,6 +19,7 @@ class PlaylistController extends GetxController {
   final _audioHandler = getIt<CustomAudioHandler>();
 
   PlaylistController() {
+    // _playlist = playlistMock;
     _listenToChangesInSong();
   }
 
@@ -32,11 +35,11 @@ class PlaylistController extends GetxController {
       }
     });
     _audioHandler.mediaItem.listen((mediaItem) {
-      if (_playlist.isNotEmpty) {
+      if (_playlist.isNotEmpty && mediaItem != null) {
         if (_currentPlayTrack == null ||
-            _currentPlayTrack?.id != mediaItem?.id) {
+            _currentPlayTrack?.id != mediaItem.id) {
           _currentPlayTrack =
-              _playlist.singleWhere((element) => element.id == mediaItem?.id);
+              _playlist.singleWhere((element) => element.id == mediaItem.id);
           update();
         }
       }
@@ -64,6 +67,8 @@ class PlaylistController extends GetxController {
   }
 
   Future<void> getAudioFilesFromDirectory() async {
-    addPlaylistItems(await getTracksFromDirectory());
+    if (!kIsWeb) {
+      addPlaylistItems(await getTracksFromDirectory());
+    }
   }
 }
