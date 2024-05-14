@@ -40,17 +40,15 @@ class MusicPlayerScreen extends StatelessWidget {
                   children: [
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 15,
-                        vertical: 10,
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          IconButton(
-                            onPressed: () => Navigator.pop(context),
-                            icon:
-                                const Icon(Icons.keyboard_arrow_down, size: 30),
-                          ),
+                          horizontal: 15, vertical: 10),
+                      child: AppBar(
+                        backgroundColor: Colors.transparent,
+                        surfaceTintColor: Colors.transparent,
+                        leading: IconButton(
+                          onPressed: () => Navigator.pop(context),
+                          icon: const Icon(Icons.keyboard_arrow_down, size: 30),
+                        ),
+                        actions: [
                           IconButton(
                             onPressed: () => {},
                             icon: const Icon(Icons.more_vert, size: 30),
