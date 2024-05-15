@@ -23,7 +23,7 @@ class FileExplorerController extends GetxController {
 
   void moveToParentDirectory() {
     try {
-      if (_currentDirectory != _root) {
+      if (_currentDirectory?.path != _root?.path) {
         _currentDirectory = _currentDirectory?.parent;
         update();
       }
