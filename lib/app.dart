@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mulink/ui/home_screen/home_screen.dart';
+import 'package:mulink/ui/home_screen/main_screen.dart';
 
 class App extends StatelessWidget {
   const App({super.key});
@@ -12,7 +12,7 @@ class App extends StatelessWidget {
         primary: Colors.indigo.shade200,
         secondary: Colors.indigo.shade600,
       )),
-      home: const HomeScreen(),
+      home: const MainScreen(),
     );
   }
 }
