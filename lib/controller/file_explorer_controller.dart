@@ -11,9 +11,12 @@ class FileExplorerController extends GetxController {
   Directory? get root => _root;
 
   Future<void> setRootPath() async {
-    _root = await getDirectoryFromFilePicker();
-    _currentDirectory = _root;
-    update();
+    Directory? newRoot = await getDirectoryFromFilePicker();
+    if (newRoot != null) {
+      _root = newRoot;
+      _currentDirectory = _root;
+      update();
+    }
   }
 
   void setCurrentDirectory(Directory newDir) {
