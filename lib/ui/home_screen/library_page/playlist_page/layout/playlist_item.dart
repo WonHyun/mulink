@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:mulink/model/track.dart';
 import 'package:mulink/ui/home_screen/library_page/playlist_page/component/media_thumb_image.dart';
 import 'package:mulink/ui/home_screen/library_page/playlist_page/component/media_thumb_info.dart';
@@ -25,7 +26,9 @@ class PlaylistItem extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
-            color: isSelected ? Colors.grey : Colors.grey.shade800,
+            color: isSelected
+                ? context.theme.colorScheme.primary
+                : context.theme.colorScheme.inverseSurface.withOpacity(0.3),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
