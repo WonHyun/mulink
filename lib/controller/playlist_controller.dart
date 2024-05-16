@@ -1,6 +1,4 @@
 import 'package:audio_service/audio_service.dart';
-import 'package:flutter/foundation.dart';
-import 'package:mulink/service/util/file_util.dart';
 import 'package:get/get.dart';
 import 'package:mulink/model/track.dart';
 import 'package:mulink/service/audio/mulink_audio_handler.dart';
@@ -64,11 +62,5 @@ class PlaylistController extends GetxController {
     final lastIndex = _audioHandler.queue.value.length - 1;
     if (lastIndex < 0) return;
     _audioHandler.removeQueueItemAt(lastIndex);
-  }
-
-  Future<void> getAudioFilesFromDirectory() async {
-    if (!kIsWeb) {
-      addPlaylistItems(await getTracksFromDirectory());
-    }
   }
 }

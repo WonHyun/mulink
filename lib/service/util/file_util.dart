@@ -21,11 +21,14 @@ Future<void> createDirectory(String path) async {
   }
 }
 
-Future<List<Track>> getTracksFromDirectory() async {
+Future<List<Track>> getTracksFromDirectory({
+  Directory? dir,
+  bool isRecursive = false,
+}) async {
   List<Track> tracks = [];
-  Directory? dir = await getDirectoryFromFilePicker();
   if (dir != null) {
-    await for (var entity in dir.list(recursive: true, followLinks: false)) {
+    await for (var entity
+        in dir.list(recursive: isRecursive, followLinks: false)) {
       if (entity is File && isAudioFile(entity.path)) {
         tracks.add(await createTrackFromFile(entity));
       }

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
-import 'package:mulink/controller/file_explorer_controller.dart';
+import 'package:mulink/controller/library_controller.dart';
 import 'package:mulink/controller/player_controller.dart';
 import 'package:mulink/controller/playlist_controller.dart';
 import 'package:mulink/global/constant/const.dart';
@@ -22,8 +22,8 @@ Future<void> initializeApp() async {
   await setupServiceLocator();
 
   Get.put(PlaylistController());
-  Get.put(PlayerController(Get.find()));
-  Get.put(FileExplorerController());
+  Get.put(PlayerController(playlistController: Get.find()));
+  Get.put(LibraryController(playlistController: Get.find()));
 
   //TODO : Set Permission, Network, Preference, Auth ...
   if (!kIsWeb) {

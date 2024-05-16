@@ -55,7 +55,7 @@ class PlayerController extends GetxController {
   double get speed => _speed;
   bool get isMute => _isMute;
 
-  PlayerController(this.playlistController) {
+  PlayerController({required this.playlistController}) {
     init();
   }
 
