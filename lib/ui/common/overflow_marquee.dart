@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:marquee/marquee.dart';
+import 'package:mulink/ui/common/marquee.dart';
 
 class OverflowMarquee extends StatelessWidget {
   const OverflowMarquee({

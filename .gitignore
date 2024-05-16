@@ -50,7 +50,6 @@ app.*.map.json
 .dart_tool/
 .flutter-plugins
 .flutter-plugins-dependencies
-.fvm/flutter_sdk
 .packages
 .pub-cache/
 .pub/
@@ -230,7 +229,6 @@ fabric.properties
 # Icon must end with two \r
 Icon
 
-
 # Thumbnails
 ._*
 
@@ -303,3 +301,6 @@ $RECYCLE.BIN/
 
 # Secrets
 *.env
+
+# FVM Version Cache
+.fvm/
