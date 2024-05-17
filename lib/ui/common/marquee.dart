@@ -735,8 +735,11 @@ class _MarqueeState extends State<Marquee> with SingleTickerProviderStateMixin {
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (_, i) {
         final text = i.isEven
-            ? Text(widget.text,
-                style: widget.style, textScaleFactor: widget.textScaleFactor)
+            ? Text(
+                widget.text,
+                style: widget.style,
+                textScaler: TextScaler.linear(widget.textScaleFactor ?? 1.0),
+              )
             : _buildBlankSpace();
         return alignment == null
             ? text

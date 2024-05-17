@@ -22,24 +22,15 @@ class OverflowMarquee extends StatelessWidget {
         )..layout();
 
         if (textPainter.width >= constraints.maxWidth) {
-          return ShaderMask(
-            shaderCallback: (Rect bounds) {
-              return const LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: <Color>[Colors.white, Colors.white, Colors.transparent],
-                stops: [0.0, 0.95, 1.0],
-              ).createShader(bounds);
-            },
-            blendMode: BlendMode.dstIn,
-            child: SizedBox(
-              height: textPainter.height,
-              child: Marquee(
-                text: text,
-                style: textStyle,
-                blankSpace: 50,
-                pauseAfterRound: const Duration(seconds: 2),
-              ),
+          return SizedBox(
+            height: textPainter.height,
+            child: Marquee(
+              text: text,
+              style: textStyle,
+              blankSpace: 50,
+              fadingEdgeStartFraction: 0.05,
+              fadingEdgeEndFraction: 0.05,
+              pauseAfterRound: const Duration(seconds: 2),
             ),
           );
         } else {
