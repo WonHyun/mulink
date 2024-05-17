@@ -116,24 +116,29 @@ class MulinkAudioHandler extends BaseAudioHandler
 
   @override
   Future<void> addQueueItems(List<MediaItem> mediaItems) async {
+    final uniqueMediaItems =
+        mediaItems.where((element) => !queue.value.contains(element)).toList();
+
     // manage Just Audio
-    final audioSource = mediaItems.map(_createAudioSource);
-    _playlist.addAll(audioSource.toList());
+    final audioSource = uniqueMediaItems.map(_createAudioSource);
+    await _playlist.addAll(audioSource.toList());
 
     // notify system
-    final newQueue = queue.value..addAll(mediaItems);
+    final newQueue = queue.value..addAll(uniqueMediaItems);
     queue.add(newQueue);
   }
 
   @override
   Future<void> addQueueItem(MediaItem mediaItem) async {
-    // manage Just Audio
-    final audioSource = _createAudioSource(mediaItem);
-    _playlist.add(audioSource);
+    if (!queue.value.contains(mediaItem)) {
+      // manage Just Audio
+      final audioSource = _createAudioSource(mediaItem);
+      await _playlist.add(audioSource);
 
-    // notify system
-    final newQueue = queue.value..add(mediaItem);
-    queue.add(newQueue);
+      // notify system
+      final newQueue = queue.value..add(mediaItem);
+      queue.add(newQueue);
+    }
   }
 
   UriAudioSource _createAudioSource(MediaItem mediaItem) {
@@ -153,7 +158,7 @@ class MulinkAudioHandler extends BaseAudioHandler
   @override
   Future<void> removeQueueItemAt(int index) async {
     // manage Just Audio
-    _playlist.removeAt(index);
+    await _playlist.removeAt(index);
 
     // notify system
     final newQueue = queue.value..removeAt(index);
@@ -161,13 +166,13 @@ class MulinkAudioHandler extends BaseAudioHandler
   }
 
   @override
-  Future<void> play() => _player.play();
+  Future<void> play() async => await _player.play();
 
   @override
-  Future<void> pause() => _player.pause();
+  Future<void> pause() async => await _player.pause();
 
   @override
-  Future<void> seek(Duration position) => _player.seek(position);
+  Future<void> seek(Duration position) async => await _player.seek(position);
 
   @override
   Future<void> skipToQueueItem(int index) async {
@@ -175,27 +180,27 @@ class MulinkAudioHandler extends BaseAudioHandler
     if (_player.shuffleModeEnabled) {
       index = _player.shuffleIndices![index];
     }
-    _player.seek(Duration.zero, index: index);
+    await _player.seek(Duration.zero, index: index);
   }
 
   @override
-  Future<void> skipToNext() => _player.seekToNext();
+  Future<void> skipToNext() async => await _player.seekToNext();
 
   @override
-  Future<void> skipToPrevious() => _player.seekToPrevious();
+  Future<void> skipToPrevious() async => await _player.seekToPrevious();
 
   @override
   Future<void> setRepeatMode(AudioServiceRepeatMode repeatMode) async {
     switch (repeatMode) {
       case AudioServiceRepeatMode.none:
-        _player.setLoopMode(LoopMode.off);
+        await _player.setLoopMode(LoopMode.off);
         break;
       case AudioServiceRepeatMode.one:
-        _player.setLoopMode(LoopMode.one);
+        await _player.setLoopMode(LoopMode.one);
         break;
       case AudioServiceRepeatMode.group:
       case AudioServiceRepeatMode.all:
-        _player.setLoopMode(LoopMode.all);
+        await _player.setLoopMode(LoopMode.all);
         break;
     }
   }
@@ -203,10 +208,10 @@ class MulinkAudioHandler extends BaseAudioHandler
   @override
   Future<void> setShuffleMode(AudioServiceShuffleMode shuffleMode) async {
     if (shuffleMode == AudioServiceShuffleMode.none) {
-      _player.setShuffleModeEnabled(false);
+      await _player.setShuffleModeEnabled(false);
     } else {
       await _player.shuffle();
-      _player.setShuffleModeEnabled(true);
+      await _player.setShuffleModeEnabled(true);
     }
   }
 
@@ -241,7 +246,7 @@ class MulinkAudioHandler extends BaseAudioHandler
   @override
   Future<void> clearQueue() async {
     // manage Just Audio
-    _playlist.clear();
+    await _playlist.clear();
 
     // notify system
     queue.value.clear();
