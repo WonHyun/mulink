@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:mulink/controller/library_controller.dart';
 import 'package:mulink/model/audio_file.dart';
 import 'package:mulink/model/folder.dart';
+import 'package:mulink/ui/home_screen/library_page/playlist_page/component/media_thumb_image.dart';
 
 class LibraryPage extends StatelessWidget {
   const LibraryPage({
@@ -27,7 +28,7 @@ class LibraryPage extends StatelessWidget {
               ),
               Expanded(
                 child: Text(
-                  controller.selectedFolder?.path ?? "",
+                  controller.selectedFolder?.path.split("/").last ?? "",
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -44,28 +45,40 @@ class LibraryPage extends StatelessWidget {
                   final trackCount =
                       currentItem.children.whereType<AudioFile>().length;
                   return ListTile(
-                    leading: const Icon(Icons.folder_open),
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(currentItem.name),
-                        Text("${trackCount.toString()} Tracks"),
-                      ],
+                    leading: const Icon(
+                      Icons.folder_open,
+                      size: 50,
+                    ),
+                    title: Text(
+                      currentItem.name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    subtitle: Text("${trackCount.toString()} Tracks"),
+                    trailing: IconButton(
+                      onPressed: () => {},
+                      icon: const Icon(Icons.more_vert),
                     ),
                     onTap: () => controller.selectFolder(currentItem),
                   );
                 }
                 if (currentItem is AudioFile) {
                   return ListTile(
-                    leading: const Icon(Icons.audiotrack_outlined),
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(currentItem.track.title),
-                        Text(currentItem.track.artist ?? ""),
-                      ],
+                    leading: MediaThumbImage(
+                      albumCoverData: currentItem.track.albumCover,
                     ),
-                    onTap: () => {},
+                    title: Text(
+                      currentItem.track.title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    subtitle: Text(
+                      currentItem.track.artist ?? "",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    selected: controller.selectedAudio == currentItem,
+                    onTap: () => controller.selectAudioFile(currentItem),
                   );
                 }
                 return const SizedBox.shrink();
