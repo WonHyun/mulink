@@ -3,6 +3,7 @@ import 'package:just_audio/just_audio.dart';
 
 abstract class CustomAudioHandler extends BaseAudioHandler {
   Future<void> setVolume(double volume);
+  Future<void> clearQueue();
 }
 
 Future<CustomAudioHandler> initAudioService() async {
@@ -235,5 +236,14 @@ class MulinkAudioHandler extends BaseAudioHandler
 
   Future<void> setPitch(double pitch) async {
     await _player.setPitch(pitch);
+  }
+
+  @override
+  Future<void> clearQueue() async {
+    // manage Just Audio
+    _playlist.clear();
+
+    // notify system
+    queue.value.clear();
   }
 }

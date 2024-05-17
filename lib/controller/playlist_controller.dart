@@ -28,9 +28,6 @@ class PlaylistController extends GetxController {
         _playlist = _oldPlaylist.whereType<Track>().toList();
         update();
       }
-      if (_playlist.isNotEmpty && _currentPlayTrack == null) {
-        _currentPlayTrack = _playlist.first;
-      }
     });
     _audioHandler.mediaItem.listen((mediaItem) {
       if (_playlist.isNotEmpty && mediaItem != null) {
@@ -62,5 +59,11 @@ class PlaylistController extends GetxController {
     final lastIndex = _audioHandler.queue.value.length - 1;
     if (lastIndex < 0) return;
     _audioHandler.removeQueueItemAt(lastIndex);
+  }
+
+  void clearQueue() {
+    _audioHandler.clearQueue();
+    _playlist.clear();
+    _currentPlayTrack = null;
   }
 }

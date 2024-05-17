@@ -14,17 +14,17 @@ class LibraryController extends GetxController {
   List<LibraryItem> _libraryItemList = [];
   Folder? _selectedFolder;
   Folder? _parentFolder;
+  AudioFile? _selectedAudio;
 
   Directory? get root => _root;
   List<LibraryItem> get libraryItemList => _libraryItemList;
   Folder? get selectedFolder => _selectedFolder;
   Folder? get parentFolder => _parentFolder;
+  AudioFile? get selectedAudio => _selectedAudio;
 
   PlaylistController playlistController;
 
   LibraryController({required this.playlistController});
-
-  List<Track> tracks = [];
 
   Future<void> setRootPath() async {
     Directory? newRoot = await getDirectoryFromFilePicker();
@@ -72,6 +72,17 @@ class LibraryController extends GetxController {
     return items;
   }
 
+  void selectAudioFile(AudioFile selected) {
+    if (selectedFolder != null) {
+      playlistController.clearQueue();
+      playlistController
+          .addPlaylistItems(getTracksFromFolder(selectedFolder!.children));
+      playlistController.setCurrentTrack(selected.track);
+      _selectedAudio = selected;
+    }
+    update();
+  }
+
   void selectFolder(Folder selected) {
     _parentFolder = _selectedFolder;
     _selectedFolder = selected;
@@ -83,17 +94,13 @@ class LibraryController extends GetxController {
     update();
   }
 
-  Future<void> getTracksFromLibrary({
-    required List<LibraryItem> itemList,
-    required List<Track> tracks,
-  }) async {
+  List<Track> getTracksFromFolder(List<LibraryItem> itemList) {
+    List<Track> tracks = [];
     for (var entity in itemList) {
-      if (entity is Folder) {
-        getTracksFromLibrary(itemList: entity.children, tracks: tracks);
-      }
       if (entity is AudioFile) {
         tracks.add(entity.track);
       }
     }
+    return tracks;
   }
 }
