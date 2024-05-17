@@ -23,47 +23,60 @@ class PlaylistController extends GetxController {
 
   void _listenToChangesInSong() {
     _audioHandler.queue.listen((queue) {
-      if (_oldPlaylist != queue) {
-        _oldPlaylist = queue;
-        _playlist = _oldPlaylist.whereType<Track>().toList();
-        update();
-      }
+      setPlaylist(queue);
     });
     _audioHandler.mediaItem.listen((mediaItem) {
-      if (_playlist.isNotEmpty && mediaItem != null) {
-        if (_currentPlayTrack == null ||
-            _currentPlayTrack?.id != mediaItem.id) {
-          _currentPlayTrack =
-              _playlist.singleWhere((element) => element.id == mediaItem.id);
-          update();
-        }
-      }
+      setCurrentTrack(
+        _playlist.firstWhereOrNull(
+          (element) => element.id == mediaItem?.id,
+        ),
+      );
     });
   }
 
-  void setCurrentTrack(Track? track) {
-    if (track != null) {
-      _audioHandler.skipToQueueItem(_playlist.indexOf(track));
+  Future<void> setPlaylist(List<MediaItem> newPlaylist) async {
+    if (_oldPlaylist != newPlaylist) {
+      _oldPlaylist = newPlaylist;
+      _playlist = _oldPlaylist.whereType<Track>().toList();
+      update();
     }
   }
 
-  void addPlaylistItem(Track track) {
-    _audioHandler.addQueueItem(track);
+  Future<void> setCurrentTrack(Track? track) async {
+    if (track != null) {
+      _currentPlayTrack = track;
+      await _audioHandler.skipToQueueItem(_playlist.indexOf(track));
+      update();
+    }
   }
 
-  void addPlaylistItems(List<Track> tracks) {
-    _audioHandler.addQueueItems(tracks);
+  Future<void> addPlaylistItem(Track track) async {
+    if (!_playlist.contains(track)) {
+      _playlist.add(track);
+      await _audioHandler.addQueueItem(track);
+      update();
+    }
   }
 
-  void remove() {
+  Future<void> addPlaylistItems(List<Track> tracks) async {
+    final uniqueTracks =
+        tracks.where((element) => !_playlist.contains(element)).toList();
+    _playlist.addAll(uniqueTracks);
+    await _audioHandler.addQueueItems(uniqueTracks);
+    update();
+  }
+
+  Future<void> remove() async {
     final lastIndex = _audioHandler.queue.value.length - 1;
     if (lastIndex < 0) return;
-    _audioHandler.removeQueueItemAt(lastIndex);
+    await _audioHandler.removeQueueItemAt(lastIndex);
+    update();
   }
 
-  void clearQueue() {
-    _audioHandler.clearQueue();
+  Future<void> clearQueue() async {
     _playlist.clear();
     _currentPlayTrack = null;
+    await _audioHandler.clearQueue();
+    update();
   }
 }
