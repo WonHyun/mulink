@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:mulink/controller/playlist_controller.dart';
+import 'package:mulink/global/type/stack.dart';
 import 'package:mulink/model/base/library_item.dart';
 import 'package:mulink/model/audio_file.dart';
 import 'package:mulink/model/folder.dart';
@@ -37,8 +38,12 @@ class LibraryController extends GetxController {
           children: await createLibraryItemList(_root!.path),
         ),
       ];
+
       _selectedFolder = _libraryItemList.first as Folder;
       _parentFolder = _selectedFolder;
+
+      await playlistController
+          .addPlaylistItems(getTracksFromAllFolder(_selectedFolder!));
       update();
     }
   }
@@ -72,15 +77,12 @@ class LibraryController extends GetxController {
     return items;
   }
 
-  void selectAudioFile(AudioFile selected) {
+  Future<void> selectAudioFile(AudioFile selected) async {
     if (selectedFolder != null) {
-      playlistController.clearQueue();
-      playlistController
-          .addPlaylistItems(getTracksFromFolder(selectedFolder!.children));
-      playlistController.setCurrentTrack(selected.track);
+      await playlistController.setCurrentTrack(selected.track);
       _selectedAudio = selected;
+      update();
     }
-    update();
   }
 
   void selectFolder(Folder selected) {
@@ -94,13 +96,35 @@ class LibraryController extends GetxController {
     update();
   }
 
-  List<Track> getTracksFromFolder(List<LibraryItem> itemList) {
+  List<Track> getTracksFromFolder(List<LibraryItem> children) {
     List<Track> tracks = [];
-    for (var entity in itemList) {
+    for (var entity in children) {
       if (entity is AudioFile) {
         tracks.add(entity.track);
       }
     }
+    return tracks;
+  }
+
+  List<Track> getTracksFromAllFolder(Folder root) {
+    List<Track> tracks = [];
+    Stack<Folder> stack = Stack<Folder>();
+
+    stack.push(root);
+
+    while (!stack.isEmpty) {
+      Folder currentFolder = stack.pop();
+
+      for (var entity in currentFolder.children) {
+        if (entity is Folder) {
+          stack.push(entity);
+        }
+        if (entity is AudioFile) {
+          tracks.add(entity.track);
+        }
+      }
+    }
+
     return tracks;
   }
 }

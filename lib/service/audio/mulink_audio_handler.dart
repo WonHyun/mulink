@@ -116,15 +116,12 @@ class MulinkAudioHandler extends BaseAudioHandler
 
   @override
   Future<void> addQueueItems(List<MediaItem> mediaItems) async {
-    final uniqueMediaItems =
-        mediaItems.where((element) => !queue.value.contains(element)).toList();
-
     // manage Just Audio
-    final audioSource = uniqueMediaItems.map(_createAudioSource);
+    final audioSource = mediaItems.map(_createAudioSource);
     await _playlist.addAll(audioSource.toList());
 
     // notify system
-    final newQueue = queue.value..addAll(uniqueMediaItems);
+    final newQueue = queue.value..addAll(mediaItems);
     queue.add(newQueue);
   }
 

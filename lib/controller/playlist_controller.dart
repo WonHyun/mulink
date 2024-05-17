@@ -43,7 +43,7 @@ class PlaylistController extends GetxController {
   }
 
   Future<void> setCurrentTrack(Track? track) async {
-    if (track != null) {
+    if (track != null && track.id != _currentPlayTrack?.id) {
       _currentPlayTrack = track;
       await _audioHandler.skipToQueueItem(_playlist.indexOf(track));
       update();
@@ -59,10 +59,8 @@ class PlaylistController extends GetxController {
   }
 
   Future<void> addPlaylistItems(List<Track> tracks) async {
-    final uniqueTracks =
-        tracks.where((element) => !_playlist.contains(element)).toList();
-    _playlist.addAll(uniqueTracks);
-    await _audioHandler.addQueueItems(uniqueTracks);
+    _playlist.addAll(tracks);
+    await _audioHandler.addQueueItems(tracks);
     update();
   }
 
