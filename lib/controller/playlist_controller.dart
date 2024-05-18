@@ -14,7 +14,7 @@ class PlaylistController extends GetxController {
   Track? _currentPlayTrack;
   Track? get currentPlayTrack => _currentPlayTrack;
 
-  final _audioHandler = getIt<CustomAudioHandler>();
+  final _audioHandler = getIt<JustAudioHandler>();
 
   PlaylistController() {
     // _playlist = playlistMock;

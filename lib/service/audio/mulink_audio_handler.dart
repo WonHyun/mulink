@@ -3,20 +3,29 @@ import 'package:just_audio/just_audio.dart';
 import 'package:mulink/model/position_data.dart';
 import 'package:rxdart/rxdart.dart';
 
-abstract class CustomAudioHandler extends BaseAudioHandler {
-  Stream<PlayerState> get playerStateStream;
+abstract class JustAudioHandler extends BaseAudioHandler {
+  Stream<ProcessingState> get processingStateStream;
   Stream<SequenceState?> get sequenceStateStream;
-  Stream<bool> get shuffleModeEnabledStream;
-  Stream<LoopMode> get loopModeStream;
+  Stream<int?> get currentIndexStream;
+
+  Stream<PlayerState> get playerStateStream;
+  Stream<IcyMetadata?> get icyMetadataStream;
   Stream<PositionData> get positionDataStream;
-  Stream<double> get speedStream;
+
+  Stream<bool> get shuffleModeEnabledStream;
+  Stream<List<int>?> get shuffleIndicesStream;
+  Stream<LoopMode> get loopModeStream;
+
   Stream<double> get volumeStream;
+  Stream<double> get speedStream;
+  Stream<double> get pitchStream;
 
   Future<void> setVolume(double volume);
+  Future<void> setPitch(double pitch);
   Future<void> clearQueue();
 }
 
-Future<CustomAudioHandler> initAudioService() async {
+Future<JustAudioHandler> initAudioService() async {
   return await AudioService.init(
     builder: () => MulinkAudioHandler(),
     config: const AudioServiceConfig(
@@ -29,24 +38,22 @@ Future<CustomAudioHandler> initAudioService() async {
   );
 }
 
-class MulinkAudioHandler extends BaseAudioHandler
-    implements CustomAudioHandler {
+class MulinkAudioHandler extends BaseAudioHandler implements JustAudioHandler {
   final _player = AudioPlayer();
   final _playlist = ConcatenatingAudioSource(children: []);
 
   @override
-  Stream<PlayerState> get playerStateStream => _player.playerStateStream;
+  Stream<ProcessingState> get processingStateStream =>
+      _player.processingStateStream;
   @override
   Stream<SequenceState?> get sequenceStateStream => _player.sequenceStateStream;
   @override
-  Stream<bool> get shuffleModeEnabledStream => _player.shuffleModeEnabledStream;
-  @override
-  Stream<LoopMode> get loopModeStream => _player.loopModeStream;
-  @override
-  Stream<double> get speedStream => _player.speedStream;
-  @override
-  Stream<double> get volumeStream => _player.volumeStream;
+  Stream<int?> get currentIndexStream => _player.currentIndexStream;
 
+  @override
+  Stream<PlayerState> get playerStateStream => _player.playerStateStream;
+  @override
+  Stream<IcyMetadata?> get icyMetadataStream => _player.icyMetadataStream;
   @override
   Stream<PositionData> get positionDataStream =>
       Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
@@ -55,6 +62,20 @@ class MulinkAudioHandler extends BaseAudioHandler
           _player.durationStream,
           (position, bufferedPosition, duration) => PositionData(
               position, bufferedPosition, duration ?? Duration.zero));
+
+  @override
+  Stream<bool> get shuffleModeEnabledStream => _player.shuffleModeEnabledStream;
+  @override
+  Stream<List<int>?> get shuffleIndicesStream => _player.shuffleIndicesStream;
+  @override
+  Stream<LoopMode> get loopModeStream => _player.loopModeStream;
+
+  @override
+  Stream<double> get volumeStream => _player.volumeStream;
+  @override
+  Stream<double> get speedStream => _player.speedStream;
+  @override
+  Stream<double> get pitchStream => _player.pitchStream;
 
   MulinkAudioHandler() {
     _loadEmptyPlaylist();
@@ -264,6 +285,7 @@ class MulinkAudioHandler extends BaseAudioHandler
     await _player.setVolume(volume);
   }
 
+  @override
   Future<void> setPitch(double pitch) async {
     await _player.setPitch(pitch);
   }

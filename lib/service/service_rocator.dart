@@ -4,5 +4,5 @@ import 'package:mulink/service/audio/mulink_audio_handler.dart';
 GetIt getIt = GetIt.instance;
 
 Future<void> setupServiceLocator() async {
-  getIt.registerSingleton<CustomAudioHandler>(await initAudioService());
+  getIt.registerSingleton<JustAudioHandler>(await initAudioService());
 }

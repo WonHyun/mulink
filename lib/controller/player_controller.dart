@@ -29,7 +29,7 @@ class ProgressBarState {
 }
 
 class PlayerController extends GetxController {
-  final _audioHandler = getIt<CustomAudioHandler>();
+  final _audioHandler = getIt<JustAudioHandler>();
 
   bool _isShuffled = false;
   RepeatState _repeatState = RepeatState.off;
@@ -48,10 +48,12 @@ class PlayerController extends GetxController {
   double _volume = 0.8;
   double _beforeMuteVolume = 0.8;
   double _speed = 1.0;
+  double _pitch = 1.0;
   bool _isMute = false;
 
   double get volume => _volume;
   double get speed => _speed;
+  double get pitch => _pitch;
   bool get isMute => _isMute;
 
   PlayerController() {
@@ -181,6 +183,11 @@ class PlayerController extends GetxController {
   Future<void> setSpeed(double speed) async {
     _speed = double.parse(speed.toStringAsFixed(1));
     await _audioHandler.setSpeed(_speed);
+  }
+
+  Future<void> setPitch(double pitch) async {
+    _pitch = double.parse(pitch.toStringAsFixed(1));
+    await _audioHandler.setPitch(_pitch);
   }
 
   @override
