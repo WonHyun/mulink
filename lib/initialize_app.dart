@@ -22,7 +22,7 @@ Future<void> initializeApp() async {
   await setupServiceLocator();
 
   Get.put(PlaylistController());
-  Get.put(PlayerController(playlistController: Get.find()));
+  Get.put(PlayerController());
   Get.put(LibraryController(playlistController: Get.find()));
 
   //TODO : Set Permission, Network, Preference, Auth ...

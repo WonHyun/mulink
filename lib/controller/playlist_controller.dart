@@ -19,19 +19,25 @@ class PlaylistController extends GetxController {
   PlaylistController() {
     // _playlist = playlistMock;
     _listenToChangesInSong();
+    _loadPlaylist();
+  }
+
+  Future<void> _loadPlaylist() async {
+    await _audioHandler.addQueueItems(_playlist as List<MediaItem>);
   }
 
   void _listenToChangesInSong() {
-    _audioHandler.queue.listen((queue) {
-      setPlaylist(queue);
+    _audioHandler.queue.listen((queue) async {
+      await setPlaylist(queue);
     });
-    _audioHandler.mediaItem.listen((mediaItem) {
-      setCurrentTrack(
+    _audioHandler.mediaItem.listen((mediaItem) async {
+      await setCurrentTrack(
         _playlist.firstWhereOrNull(
           (element) => element.id == mediaItem?.id,
         ),
       );
     });
+    _audioHandler.sequenceStateStream.listen((sequenceState) {});
   }
 
   Future<void> setPlaylist(List<MediaItem> newPlaylist) async {
@@ -54,27 +60,23 @@ class PlaylistController extends GetxController {
     if (!_playlist.contains(track)) {
       _playlist.add(track);
       await _audioHandler.addQueueItem(track);
-      update();
     }
   }
 
   Future<void> addPlaylistItems(List<Track> tracks) async {
     _playlist.addAll(tracks);
     await _audioHandler.addQueueItems(tracks);
-    update();
   }
 
   Future<void> remove() async {
     final lastIndex = _audioHandler.queue.value.length - 1;
     if (lastIndex < 0) return;
     await _audioHandler.removeQueueItemAt(lastIndex);
-    update();
   }
 
   Future<void> clearQueue() async {
     _playlist.clear();
     _currentPlayTrack = null;
     await _audioHandler.clearQueue();
-    update();
   }
 }

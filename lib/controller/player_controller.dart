@@ -1,5 +1,6 @@
+import 'dart:async';
 import 'package:get/get.dart';
-import 'package:mulink/controller/playlist_controller.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:mulink/service/audio/mulink_audio_handler.dart';
 import 'package:mulink/service/service_rocator.dart';
 import 'package:audio_service/audio_service.dart';
@@ -30,8 +31,6 @@ class ProgressBarState {
 class PlayerController extends GetxController {
   final _audioHandler = getIt<CustomAudioHandler>();
 
-  final PlaylistController playlistController;
-
   bool _isShuffled = false;
   RepeatState _repeatState = RepeatState.off;
   PlayButtonState _playButtonState = PlayButtonState.paused;
@@ -55,140 +54,138 @@ class PlayerController extends GetxController {
   double get speed => _speed;
   bool get isMute => _isMute;
 
-  PlayerController({required this.playlistController}) {
-    init();
-  }
-
-  void init() async {
-    await _loadPlaylist();
+  PlayerController() {
     _listenToPlaybackState();
-    _listenToCurrentPosition();
-    _listenToTotalDuration();
-    _listenToBufferedPosition();
+    _listenToPosition();
+    _listenToVolume();
+    _listenToSpeed();
+    _listenToLoopMode();
+    _listenToShuffleMode();
+
+    setVolume(_volume);
+    setSpeed(_speed);
   }
 
-  Future<void> _loadPlaylist() async {
-    _audioHandler.addQueueItems(playlistController.playlist as List<MediaItem>);
+  void _listenToShuffleMode() {
+    _audioHandler.shuffleModeEnabledStream.listen((isShuffled) {
+      _isShuffled = isShuffled;
+      update();
+    });
   }
 
-  void _listenToPlaybackState() {
-    _audioHandler.playbackState.listen((playbackState) {
-      final isPlaying = playbackState.playing;
-      final processingState = playbackState.processingState;
-      if (processingState == AudioProcessingState.loading ||
-          processingState == AudioProcessingState.buffering) {
-        _playButtonState = PlayButtonState.loading;
-      } else if (!isPlaying) {
-        _playButtonState = PlayButtonState.paused;
-      } else if (processingState != AudioProcessingState.completed) {
-        _playButtonState = PlayButtonState.playing;
-      } else {
-        _audioHandler.seek(Duration.zero);
-        _audioHandler.pause();
+  void _listenToLoopMode() {
+    _audioHandler.loopModeStream.listen((loopMode) {
+      switch (loopMode) {
+        case LoopMode.off:
+          _repeatState = RepeatState.off;
+        case LoopMode.all:
+          _repeatState = RepeatState.repeatPlaylist;
+        case LoopMode.one:
+          _repeatState = RepeatState.repeatSong;
+        default:
+          _repeatState = RepeatState.off;
       }
       update();
     });
   }
 
-  void _listenToCurrentPosition() {
-    AudioService.position.listen((position) {
-      final oldState = _progressBarState;
+  void _listenToSpeed() {
+    _audioHandler.speedStream.listen((speed) {
+      _speed = speed;
+      update();
+    });
+  }
+
+  void _listenToVolume() {
+    _audioHandler.volumeStream.listen((volume) {
+      _volume = volume;
+      update();
+    });
+  }
+
+  void _listenToPlaybackState() {
+    _audioHandler.playerStateStream.listen((playerState) async {
+      final isPlaying = playerState.playing;
+      final processingState = playerState.processingState;
+      if (processingState == ProcessingState.loading ||
+          processingState == ProcessingState.buffering) {
+        _playButtonState = PlayButtonState.loading;
+      } else if (!isPlaying) {
+        _playButtonState = PlayButtonState.paused;
+      } else if (processingState != ProcessingState.completed) {
+        _playButtonState = PlayButtonState.playing;
+      } else {
+        await _audioHandler.seek(Duration.zero);
+        await _audioHandler.pause();
+      }
+      update();
+    });
+  }
+
+  void _listenToPosition() {
+    _audioHandler.positionDataStream.listen((positionData) {
       _progressBarState = ProgressBarState(
-        current: position,
-        buffered: oldState.buffered,
-        total: oldState.total,
+        current: positionData.position,
+        buffered: positionData.bufferedPosition,
+        total: positionData.duration,
       );
       update();
     });
   }
 
-  void _listenToTotalDuration() {
-    _audioHandler.mediaItem.listen((mediaItem) {
-      final oldState = _progressBarState;
-      _progressBarState = ProgressBarState(
-        current: oldState.current,
-        buffered: oldState.buffered,
-        total: mediaItem?.duration ?? Duration.zero,
-      );
-      update();
-    });
-  }
+  Future<void> play() async => await _audioHandler.play();
+  Future<void> pause() async => await _audioHandler.pause();
 
-  void _listenToBufferedPosition() {
-    _audioHandler.playbackState.listen((playbackState) {
-      final oldState = _progressBarState;
-      _progressBarState = ProgressBarState(
-        current: oldState.current,
-        buffered: playbackState.bufferedPosition,
-        total: oldState.total,
-      );
-      update();
-    });
-  }
+  Future<void> seek(Duration position) async =>
+      await _audioHandler.seek(position);
 
-  void play() => _audioHandler.play();
-  void pause() => _audioHandler.pause();
+  Future<void> previous() async => await _audioHandler.skipToPrevious();
+  Future<void> next() async => await _audioHandler.skipToNext();
 
-  void seek(Duration position) => _audioHandler.seek(position);
+  Future<void> stop() async => await _audioHandler.stop();
 
-  void previous() => _audioHandler.skipToPrevious();
-  void next() => _audioHandler.skipToNext();
-
-  void stop() => _audioHandler.stop();
-
-  void toggleRepeatMode() {
+  Future<void> toggleRepeatMode() async {
     // off -> playlist -> song ...
     switch (_repeatState) {
       case RepeatState.off:
-        _repeatState = RepeatState.repeatPlaylist;
-        _audioHandler.setRepeatMode(AudioServiceRepeatMode.all);
-        break;
+        await _audioHandler.setRepeatMode(AudioServiceRepeatMode.all);
       case RepeatState.repeatSong:
-        _repeatState = RepeatState.off;
-        _audioHandler.setRepeatMode(AudioServiceRepeatMode.none);
-        break;
+        await _audioHandler.setRepeatMode(AudioServiceRepeatMode.none);
       case RepeatState.repeatPlaylist:
-        _repeatState = RepeatState.repeatSong;
-        _audioHandler.setRepeatMode(AudioServiceRepeatMode.one);
-        break;
+        await _audioHandler.setRepeatMode(AudioServiceRepeatMode.one);
     }
-    update();
   }
 
-  void toggleShuffle() {
-    _audioHandler.setShuffleMode(_isShuffled
+  Future<void> toggleShuffle() async {
+    await _audioHandler.setShuffleMode(_isShuffled
         ? AudioServiceShuffleMode.none
         : AudioServiceShuffleMode.all);
-    _isShuffled = !_isShuffled;
-    update();
   }
 
-  void toggleMute() {
+  Future<void> toggleMute() async {
     if (!isMute) {
       _beforeMuteVolume = _volume;
       _isMute = true;
-      setVolume(0.0);
+      await setVolume(0.0);
     } else {
       _isMute = false;
-      setVolume(_beforeMuteVolume);
+      await setVolume(_beforeMuteVolume);
     }
   }
 
-  void setVolume(double volume) {
+  Future<void> setVolume(double volume) async {
     _volume = volume;
-    _audioHandler.setVolume(volume);
-    update();
+    await _audioHandler.setVolume(volume);
   }
 
-  void setSpeed(double speed) {
+  Future<void> setSpeed(double speed) async {
     _speed = double.parse(speed.toStringAsFixed(1));
-    _audioHandler.setSpeed(_speed);
-    update();
+    await _audioHandler.setSpeed(_speed);
   }
 
   @override
-  void dispose() {
-    _audioHandler.customAction('dispose');
+  Future<void> dispose() async {
+    await _audioHandler.customAction('dispose');
     super.dispose();
   }
 }

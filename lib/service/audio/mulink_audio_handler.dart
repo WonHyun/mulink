@@ -1,7 +1,17 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:mulink/model/position_data.dart';
+import 'package:rxdart/rxdart.dart';
 
 abstract class CustomAudioHandler extends BaseAudioHandler {
+  Stream<PlayerState> get playerStateStream;
+  Stream<SequenceState?> get sequenceStateStream;
+  Stream<bool> get shuffleModeEnabledStream;
+  Stream<LoopMode> get loopModeStream;
+  Stream<PositionData> get positionDataStream;
+  Stream<double> get speedStream;
+  Stream<double> get volumeStream;
+
   Future<void> setVolume(double volume);
   Future<void> clearQueue();
 }
@@ -23,6 +33,28 @@ class MulinkAudioHandler extends BaseAudioHandler
     implements CustomAudioHandler {
   final _player = AudioPlayer();
   final _playlist = ConcatenatingAudioSource(children: []);
+
+  @override
+  Stream<PlayerState> get playerStateStream => _player.playerStateStream;
+  @override
+  Stream<SequenceState?> get sequenceStateStream => _player.sequenceStateStream;
+  @override
+  Stream<bool> get shuffleModeEnabledStream => _player.shuffleModeEnabledStream;
+  @override
+  Stream<LoopMode> get loopModeStream => _player.loopModeStream;
+  @override
+  Stream<double> get speedStream => _player.speedStream;
+  @override
+  Stream<double> get volumeStream => _player.volumeStream;
+
+  @override
+  Stream<PositionData> get positionDataStream =>
+      Rx.combineLatest3<Duration, Duration, Duration?, PositionData>(
+          _player.positionStream,
+          _player.bufferedPositionStream,
+          _player.durationStream,
+          (position, bufferedPosition, duration) => PositionData(
+              position, bufferedPosition, duration ?? Duration.zero));
 
   MulinkAudioHandler() {
     _loadEmptyPlaylist();
@@ -47,7 +79,6 @@ class MulinkAudioHandler extends BaseAudioHandler
         controls: [
           MediaControl.skipToPrevious,
           if (playing) MediaControl.pause else MediaControl.play,
-          // MediaControl.stop,
           MediaControl.skipToNext,
         ],
         systemActions: const {
@@ -191,14 +222,11 @@ class MulinkAudioHandler extends BaseAudioHandler
     switch (repeatMode) {
       case AudioServiceRepeatMode.none:
         await _player.setLoopMode(LoopMode.off);
-        break;
       case AudioServiceRepeatMode.one:
         await _player.setLoopMode(LoopMode.one);
-        break;
       case AudioServiceRepeatMode.group:
       case AudioServiceRepeatMode.all:
         await _player.setLoopMode(LoopMode.all);
-        break;
     }
   }
 
