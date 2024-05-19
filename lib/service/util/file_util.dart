@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_media_metadata/flutter_media_metadata.dart';
 import 'package:mulink/global/constant/const.dart';
 import 'package:mulink/global/constant/value.dart';
@@ -80,5 +81,27 @@ Future<String> getAlbumArtPath(Uint8List? albumArt, String fileName) async {
   } catch (err) {
     print(err);
     return "";
+  }
+}
+
+Future<void> savaBasicArtwork() async {
+  try {
+    createDirectory(AppPath.albumArtPath);
+
+    String filePath = "${AppPath.albumArtPath}/$basicAlbumArtFileName";
+
+    //TODO: need check logic if image file changed
+    File file = File(filePath);
+    if (!await file.exists()) {
+      final byteData = await rootBundle.load(
+        '$basicAlbumArtAssetPath/$basicAlbumArtFileName',
+      );
+      await file.writeAsBytes(
+        byteData.buffer
+            .asInt8List(byteData.offsetInBytes, byteData.lengthInBytes),
+      );
+    }
+  } catch (err) {
+    print(err);
   }
 }

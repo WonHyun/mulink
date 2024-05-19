@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:mulink/service/audio/mulink_audio_handler.dart';
-import 'package:mulink/service/service_rocator.dart';
 import 'package:audio_service/audio_service.dart';
 
 enum RepeatState {
@@ -29,7 +28,7 @@ class ProgressBarState {
 }
 
 class PlayerController extends GetxController {
-  final _audioHandler = getIt<JustAudioHandler>();
+  final JustAudioHandler audioHandler;
 
   bool _isShuffled = false;
   RepeatState _repeatState = RepeatState.off;
@@ -56,7 +55,7 @@ class PlayerController extends GetxController {
   double get pitch => _pitch;
   bool get isMute => _isMute;
 
-  PlayerController() {
+  PlayerController({required this.audioHandler}) {
     _listenToPlaybackState();
     _listenToPosition();
     _listenToVolume();
@@ -69,14 +68,14 @@ class PlayerController extends GetxController {
   }
 
   void _listenToShuffleMode() {
-    _audioHandler.shuffleModeEnabledStream.listen((isShuffled) {
+    audioHandler.shuffleModeEnabledStream.listen((isShuffled) {
       _isShuffled = isShuffled;
       update();
     });
   }
 
   void _listenToLoopMode() {
-    _audioHandler.loopModeStream.listen((loopMode) {
+    audioHandler.loopModeStream.listen((loopMode) {
       switch (loopMode) {
         case LoopMode.off:
           _repeatState = RepeatState.off;
@@ -92,21 +91,21 @@ class PlayerController extends GetxController {
   }
 
   void _listenToSpeed() {
-    _audioHandler.speedStream.listen((speed) {
+    audioHandler.speedStream.listen((speed) {
       _speed = speed;
       update();
     });
   }
 
   void _listenToVolume() {
-    _audioHandler.volumeStream.listen((volume) {
+    audioHandler.volumeStream.listen((volume) {
       _volume = volume;
       update();
     });
   }
 
   void _listenToPlaybackState() {
-    _audioHandler.playerStateStream.listen((playerState) async {
+    audioHandler.playerStateStream.listen((playerState) async {
       final isPlaying = playerState.playing;
       final processingState = playerState.processingState;
       if (processingState == ProcessingState.loading ||
@@ -117,15 +116,15 @@ class PlayerController extends GetxController {
       } else if (processingState != ProcessingState.completed) {
         _playButtonState = PlayButtonState.playing;
       } else {
-        await _audioHandler.seek(Duration.zero);
-        await _audioHandler.pause();
+        await audioHandler.seek(Duration.zero);
+        await audioHandler.pause();
       }
       update();
     });
   }
 
   void _listenToPosition() {
-    _audioHandler.positionDataStream.listen((positionData) {
+    audioHandler.positionDataStream.listen((positionData) {
       _progressBarState = ProgressBarState(
         current: positionData.position,
         buffered: positionData.bufferedPosition,
@@ -135,31 +134,31 @@ class PlayerController extends GetxController {
     });
   }
 
-  Future<void> play() async => await _audioHandler.play();
-  Future<void> pause() async => await _audioHandler.pause();
+  Future<void> play() async => await audioHandler.play();
+  Future<void> pause() async => await audioHandler.pause();
 
   Future<void> seek(Duration position) async =>
-      await _audioHandler.seek(position);
+      await audioHandler.seek(position);
 
-  Future<void> previous() async => await _audioHandler.skipToPrevious();
-  Future<void> next() async => await _audioHandler.skipToNext();
+  Future<void> previous() async => await audioHandler.skipToPrevious();
+  Future<void> next() async => await audioHandler.skipToNext();
 
-  Future<void> stop() async => await _audioHandler.stop();
+  Future<void> stop() async => await audioHandler.stop();
 
   Future<void> toggleRepeatMode() async {
     // off -> playlist -> song ...
     switch (_repeatState) {
       case RepeatState.off:
-        await _audioHandler.setRepeatMode(AudioServiceRepeatMode.all);
+        await audioHandler.setRepeatMode(AudioServiceRepeatMode.all);
       case RepeatState.repeatSong:
-        await _audioHandler.setRepeatMode(AudioServiceRepeatMode.none);
+        await audioHandler.setRepeatMode(AudioServiceRepeatMode.none);
       case RepeatState.repeatPlaylist:
-        await _audioHandler.setRepeatMode(AudioServiceRepeatMode.one);
+        await audioHandler.setRepeatMode(AudioServiceRepeatMode.one);
     }
   }
 
   Future<void> toggleShuffle() async {
-    await _audioHandler.setShuffleMode(_isShuffled
+    await audioHandler.setShuffleMode(_isShuffled
         ? AudioServiceShuffleMode.none
         : AudioServiceShuffleMode.all);
   }
@@ -177,22 +176,22 @@ class PlayerController extends GetxController {
 
   Future<void> setVolume(double volume) async {
     _volume = volume;
-    await _audioHandler.setVolume(volume);
+    await audioHandler.setVolume(volume);
   }
 
   Future<void> setSpeed(double speed) async {
     _speed = double.parse(speed.toStringAsFixed(1));
-    await _audioHandler.setSpeed(_speed);
+    await audioHandler.setSpeed(_speed);
   }
 
   Future<void> setPitch(double pitch) async {
     _pitch = double.parse(pitch.toStringAsFixed(1));
-    await _audioHandler.setPitch(_pitch);
+    await audioHandler.setPitch(_pitch);
   }
 
   @override
   Future<void> dispose() async {
-    await _audioHandler.customAction('dispose');
+    await audioHandler.customAction('dispose');
     super.dispose();
   }
 }
