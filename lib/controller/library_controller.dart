@@ -31,10 +31,8 @@ class LibraryController extends GetxController {
     playlistController.currentPlayTrackStream.listen((track) {
       if (track != null) {
         final item = _audioFileMap[track];
-        if (item != null) {
-          _selectedAudio = item;
-          update();
-        }
+        _selectedAudio = item;
+        update();
       }
     });
   }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:audio_service/audio_service.dart';
 import 'package:get/get.dart';
 import 'package:mulink/model/track.dart';
@@ -12,6 +14,7 @@ class PlaylistController extends GetxController {
 
   final Rx<Track?> _currentPlayTrack = Rx<Track?>(null);
   Track? get currentPlayTrack => _currentPlayTrack.value;
+  Stream<Track?> get currentPlayTrackStream => _currentPlayTrack.stream;
 
   final JustAudioHandler audioHandler;
 
@@ -31,7 +34,6 @@ class PlaylistController extends GetxController {
         ),
       );
     });
-    audioHandler.sequenceStateStream.listen((sequenceState) {});
   }
 
   Future<void> setPlaylist(List<MediaItem> newPlaylist) async {
