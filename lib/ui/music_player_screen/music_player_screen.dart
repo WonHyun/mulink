@@ -25,72 +25,70 @@ class MusicPlayerScreen extends StatelessWidget {
             imageData: playlistController.currentPlayTrack?.albumCover,
             themeColor: context.theme.colorScheme.surface,
           );
-          return SafeArea(
-            child: Scaffold(
-              body: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    stops: const [0.0, 1.0],
-                    colors: [context.theme.colorScheme.surface, trackColor],
-                  ),
+          return Scaffold(
+            body: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  stops: const [0.0, 1.0],
+                  colors: [context.theme.colorScheme.surface, trackColor],
                 ),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 10),
-                      child: AppBar(
-                        backgroundColor: Colors.transparent,
-                        surfaceTintColor: Colors.transparent,
-                        leading: IconButton(
-                          onPressed: () => Navigator.pop(context),
-                          icon: const Icon(Icons.keyboard_arrow_down, size: 30),
+              ),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 10),
+                    child: AppBar(
+                      backgroundColor: Colors.transparent,
+                      surfaceTintColor: Colors.transparent,
+                      leading: IconButton(
+                        onPressed: () => Navigator.pop(context),
+                        icon: const Icon(Icons.keyboard_arrow_down, size: 30),
+                      ),
+                      actions: [
+                        IconButton(
+                          onPressed: () => {},
+                          icon: const Icon(Icons.more_vert, size: 30),
                         ),
-                        actions: [
-                          IconButton(
-                            onPressed: () => {},
-                            icon: const Icon(Icons.more_vert, size: 30),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: Column(
+                        children: [
+                          Flexible(
+                            flex: 10,
+                            child: PlayerTrackInfo(
+                              controller: playlistController,
+                            ),
+                          ),
+                          Flexible(
+                            flex: 1,
+                            child: ExtraControllPanel(
+                              controller: playerController,
+                            ),
+                          ),
+                          Flexible(
+                            flex: 1,
+                            child: AudioProgressBar(
+                              controller: playerController,
+                            ),
+                          ),
+                          Flexible(
+                            flex: 2,
+                            child: PlayerControllPanel(
+                              controller: playerController,
+                            ),
                           ),
                         ],
                       ),
                     ),
-                    Expanded(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 30),
-                        child: Column(
-                          children: [
-                            Flexible(
-                              flex: 10,
-                              child: PlayerTrackInfo(
-                                controller: playlistController,
-                              ),
-                            ),
-                            Flexible(
-                              flex: 1,
-                              child: ExtraControllPanel(
-                                controller: playerController,
-                              ),
-                            ),
-                            Flexible(
-                              flex: 1,
-                              child: AudioProgressBar(
-                                controller: playerController,
-                              ),
-                            ),
-                            Flexible(
-                              flex: 2,
-                              child: PlayerControllPanel(
-                                controller: playerController,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           );
