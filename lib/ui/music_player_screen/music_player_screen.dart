@@ -28,12 +28,7 @@ class MusicPlayerScreen extends StatelessWidget {
           return Scaffold(
             body: Container(
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  stops: const [0.0, 1.0],
-                  colors: [context.theme.colorScheme.surface, trackColor],
-                ),
+                color: trackColor,
               ),
               child: Column(
                 children: [
