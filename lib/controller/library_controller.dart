@@ -23,9 +23,21 @@ class LibraryController extends GetxController {
   Folder? get parentFolder => _parentFolder;
   AudioFile? get selectedAudio => _selectedAudio;
 
+  final Map<Track, AudioFile> _audioFileMap = {};
+
   PlaylistController playlistController;
 
-  LibraryController({required this.playlistController});
+  LibraryController({required this.playlistController}) {
+    playlistController.currentPlayTrackStream.listen((track) {
+      if (track != null) {
+        final item = _audioFileMap[track];
+        if (item != null) {
+          _selectedAudio = item;
+          update();
+        }
+      }
+    });
+  }
 
   Future<void> setRootPath() async {
     Directory? newRoot = await getDirectoryFromFilePicker();
@@ -65,24 +77,20 @@ class LibraryController extends GetxController {
       }
       if (entity is File && isAudioFile(entity.path)) {
         final track = await createTrackFromFile(entity);
-        items.add(
-          AudioFile(
-            name: getFileName(entity.path),
-            path: entity.path,
-            track: track,
-          ),
+        final audioFile = AudioFile(
+          name: getFileName(entity.path),
+          path: entity.path,
+          track: track,
         );
+        _audioFileMap[audioFile.track] = audioFile;
+        items.add(audioFile);
       }
     }
     return items;
   }
 
   Future<void> selectAudioFile(AudioFile selected) async {
-    if (selectedFolder != null) {
-      await playlistController.setCurrentTrack(selected.track);
-      _selectedAudio = selected;
-      update();
-    }
+    await playlistController.setCurrentTrack(selected.track);
   }
 
   void selectFolder(Folder selected) {
