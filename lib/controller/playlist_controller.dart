@@ -4,7 +4,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:get/get.dart';
 import 'package:mulink/model/track.dart';
 import 'package:mulink/service/audio/mulink_audio_handler.dart';
-import 'package:mulink/test/playlist_mock.dart';
+// import 'package:mulink/test/playlist_mock.dart';
 
 class PlaylistController extends GetxController {
   final RxList<Track> _playlist = <Track>[].obs;
@@ -20,7 +20,7 @@ class PlaylistController extends GetxController {
 
   PlaylistController({required this.audioHandler}) {
     _listenToChangesInSong();
-    addPlaylistItems(playlistMock);
+    // addPlaylistItems(playlistMock);
   }
 
   void _listenToChangesInSong() {

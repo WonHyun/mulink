@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:mulink/controller/library_controller.dart';
 import 'package:mulink/model/audio_file.dart';
 import 'package:mulink/model/folder.dart';
-import 'package:mulink/ui/home_screen/library_page/playlist_page/component/media_thumb_image.dart';
+import 'package:mulink/ui/home_screen/library_page/media_list_item.dart';
 
 class LibraryPage extends StatelessWidget {
   const LibraryPage({
@@ -63,22 +63,10 @@ class LibraryPage extends StatelessWidget {
                   );
                 }
                 if (currentItem is AudioFile) {
-                  return ListTile(
-                    leading: MediaThumbImage(
-                      albumCoverData: currentItem.track.albumCover,
-                    ),
-                    title: Text(
-                      currentItem.track.title,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    subtitle: Text(
-                      currentItem.track.artist ?? "",
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    selected: controller.selectedAudio == currentItem,
-                    onTap: () => controller.selectAudioFile(currentItem),
+                  return MediaListItem(
+                    track: currentItem.track,
+                    callback: () => controller.selectAudioFile(currentItem),
+                    isSelected: controller.selectedAudio == currentItem,
                   );
                 }
                 return const SizedBox.shrink();

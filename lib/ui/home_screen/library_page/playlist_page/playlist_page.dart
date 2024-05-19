@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mulink/controller/playlist_controller.dart';
 import 'package:mulink/model/track.dart';
-import 'package:mulink/ui/home_screen/library_page/playlist_page/layout/playlist_item.dart';
+import 'package:mulink/ui/home_screen/library_page/media_list_item.dart';
 
 class PlaylistPage extends StatelessWidget {
   const PlaylistPage({
@@ -14,6 +14,14 @@ class PlaylistPage extends StatelessWidget {
     final PlaylistController playlistController = Get.find();
     return Column(
       children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: Row(
+            children: [
+              Text("All Tracks"),
+            ],
+          ),
+        ),
         Expanded(
           child: GetBuilder<PlaylistController>(
             builder: (_) {
@@ -22,10 +30,9 @@ class PlaylistPage extends StatelessWidget {
                 itemCount: playlistController.playlist.length,
                 itemBuilder: (context, index) {
                   Track? track = playlistController.playlist[index];
-                  return PlaylistItem(
+                  return MediaListItem(
                     track: track,
-                    callback: (trackItem) =>
-                        playlistController.setCurrentTrack(trackItem),
+                    callback: () => playlistController.setCurrentTrack(track),
                     isSelected: playlistController.currentPlayTrack == track,
                   );
                 },
