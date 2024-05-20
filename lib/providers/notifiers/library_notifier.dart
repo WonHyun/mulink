@@ -22,51 +22,26 @@ class LibraryNotifier extends StateNotifier<LibraryState> {
   final Map<Track, AudioFile> _audioFileMap = {};
 
   LibraryNotifier() : super(LibraryState()) {
-    _subscription = playlistController.currentPlayTrackStream.listen((track) {
-      updateSelectedAudio(track);
-    });
+    _subscription =
+        playlistController.currentPlayTrackStream.listen(updateSelectedAudio);
   }
 
   void updateSelectedAudio(Track? track) {
     if (track != null) {
-      state = LibraryState(
-        root: state.root,
-        libraryItemList: state.libraryItemList,
-        selectedFolder: state.selectedFolder,
-        parentFolder: state.parentFolder,
-        selectedAudio: _audioFileMap[track],
-      );
+      state = state.copyWith(selectedAudio: _audioFileMap[track]);
     }
   }
 
   void updateRoot(Directory directory) {
-    state = LibraryState(
-      root: directory,
-      libraryItemList: state.libraryItemList,
-      selectedFolder: state.selectedFolder,
-      parentFolder: state.parentFolder,
-      selectedAudio: state.selectedAudio,
-    );
+    state = state.copyWith(root: directory);
   }
 
   void updateLibraryItems(List<LibraryItem> items) {
-    state = LibraryState(
-      root: state.root,
-      libraryItemList: items,
-      selectedFolder: state.selectedFolder,
-      parentFolder: state.parentFolder,
-      selectedAudio: state.selectedAudio,
-    );
+    state = state.copyWith(libraryItemList: items);
   }
 
   void updateSelectedFolder(Folder? selected, Folder? parent) {
-    state = LibraryState(
-      root: state.root,
-      libraryItemList: state.libraryItemList,
-      selectedFolder: selected,
-      parentFolder: parent,
-      selectedAudio: state.selectedAudio,
-    );
+    state = state.copyWith(selectedFolder: selected, parentFolder: parent);
   }
 
   Future<void> setRootPath() async {

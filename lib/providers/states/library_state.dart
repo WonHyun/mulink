@@ -18,4 +18,20 @@ class LibraryState {
     this.selectedAudio,
     this.libraryItemList = const [],
   });
+
+  LibraryState copyWith({
+    Directory? root,
+    List<LibraryItem>? libraryItemList,
+    Folder? selectedFolder,
+    Folder? parentFolder,
+    AudioFile? selectedAudio,
+  }) {
+    return LibraryState(
+      root: root ?? this.root,
+      libraryItemList: libraryItemList ?? this.libraryItemList,
+      selectedFolder: selectedFolder ?? this.selectedFolder,
+      parentFolder: parentFolder ?? this.parentFolder,
+      selectedAudio: selectedAudio ?? this.selectedAudio,
+    );
+  }
 }
