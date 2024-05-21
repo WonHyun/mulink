@@ -2,28 +2,25 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:get/get.dart';
-import 'package:mulink/controller/playlist_controller.dart';
 import 'package:mulink/global/type/stack.dart';
 import 'package:mulink/model/audio_file.dart';
 import 'package:mulink/model/base/library_item.dart';
 import 'package:mulink/model/folder.dart';
 import 'package:mulink/model/track.dart';
+import 'package:mulink/providers/notifiers/queue_notifier.dart';
 import 'package:mulink/providers/states/library_state.dart';
 import 'package:mulink/service/util/file_util.dart';
 import 'package:mulink/service/util/parse_util.dart';
 
 class LibraryNotifier extends StateNotifier<LibraryState> {
-  //TODO: should be change from getx to riverpod
-  final PlaylistController playlistController = Get.find();
-
+  final QueueNotifier queueNotifier;
   late final StreamSubscription<Track?> _trackStreamSubscription;
 
   final Map<Track, AudioFile> _audioFileMap = {};
 
-  LibraryNotifier() : super(LibraryState()) {
+  LibraryNotifier({required this.queueNotifier}) : super(LibraryState()) {
     _trackStreamSubscription =
-        playlistController.currentPlayTrackStream.listen(updateSelectedAudio);
+        queueNotifier.currentTrackStream.listen(updateSelectedAudio);
   }
 
   void updateSelectedAudio(Track? track) {
@@ -56,7 +53,7 @@ class LibraryNotifier extends StateNotifier<LibraryState> {
         ),
       ];
       updateSelectedFolder(libraryItemList.first, libraryItemList.first);
-      await playlistController.addPlaylistItems(
+      await queueNotifier.addPlaylistItems(
           await getTracksFromAllFolder(state.selectedFolder!));
     }
   }
@@ -94,7 +91,7 @@ class LibraryNotifier extends StateNotifier<LibraryState> {
   }
 
   Future<void> selectAudioFile(AudioFile selected) async {
-    await playlistController.setCurrentTrack(selected.track);
+    await queueNotifier.setCurrentTrack(selected.track);
   }
 
   void selectFolder(Folder selected) {
