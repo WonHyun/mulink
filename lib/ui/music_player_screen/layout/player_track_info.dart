@@ -1,46 +1,39 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:get/get.dart';
-import 'package:mulink/controller/playlist_controller.dart';
+import 'package:mulink/model/track.dart';
 import 'package:mulink/ui/common/overflow_marquee.dart';
 import 'package:mulink/ui/music_player_screen/component/album_cover_image.dart';
 
 class PlayerTrackInfo extends StatelessWidget {
   const PlayerTrackInfo({
     super.key,
-    required this.controller,
+    required this.track,
   });
 
-  final PlaylistController controller;
+  final Track? track;
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<PlaylistController>(
-      builder: (_) {
-        return Column(
-          children: [
-            Flexible(
-              child: Hero(
-                tag: "albumCover",
-                child: AlbumCoverImage(
-                  albumCoverData: controller.currentPlayTrack?.albumCover,
-                ),
-              ),
+    return Column(
+      children: [
+        Flexible(
+          child: Hero(
+            tag: "albumCover",
+            child: AlbumCoverImage(
+              albumCoverData: track?.albumCover,
             ),
-            const SizedBox(height: 30),
-            OverflowMarquee(
-              text: controller.currentPlayTrack?.title ?? "<unknown>",
-              textStyle: context.textTheme.headlineMedium,
-            ),
-            const SizedBox(height: 10),
-            OverflowMarquee(
-              text: controller.currentPlayTrack?.artist ?? "<unknown>",
-              textStyle: context.textTheme.bodyMedium,
-            ),
-          ],
-        );
-      },
+          ),
+        ),
+        const SizedBox(height: 30),
+        OverflowMarquee(
+          text: track?.title ?? "<unknown>",
+          textStyle: Theme.of(context).textTheme.headlineMedium,
+        ),
+        const SizedBox(height: 10),
+        OverflowMarquee(
+          text: track?.artist ?? "<unknown>",
+          textStyle: Theme.of(context).textTheme.bodyMedium,
+        ),
+      ],
     );
   }
 }

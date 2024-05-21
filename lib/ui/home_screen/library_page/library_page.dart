@@ -13,18 +13,18 @@ class LibraryPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final libraryState = ref.watch(libraryProvider);
-    final libraryController = ref.watch(libraryProvider.notifier);
+    final libraryNotifier = ref.watch(libraryProvider.notifier);
 
     return Column(
       children: [
         Row(
           children: [
             IconButton(
-              onPressed: libraryController.moveToParent,
+              onPressed: libraryNotifier.moveToParent,
               icon: const Icon(Icons.arrow_back_ios),
             ),
             IconButton(
-              onPressed: libraryController.setRootPath,
+              onPressed: libraryNotifier.setRootPath,
               icon: const Icon(Icons.folder_open),
             ),
             Expanded(
@@ -60,14 +60,13 @@ class LibraryPage extends ConsumerWidget {
                     onPressed: () => {},
                     icon: const Icon(Icons.more_vert),
                   ),
-                  onTap: () => libraryController.selectFolder(currentItem),
+                  onTap: () => libraryNotifier.selectFolder(currentItem),
                 );
               }
               if (currentItem is AudioFile) {
                 return MediaListItem(
                   track: currentItem.track,
-                  callback: () =>
-                      libraryController.selectAudioFile(currentItem),
+                  onSelect: () => libraryNotifier.selectAudioFile(currentItem),
                   isSelected: libraryState.selectedAudio == currentItem,
                 );
               }

@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:mulink/controller/player_controller.dart';
 
 class ExtraControllPanel extends StatelessWidget {
   const ExtraControllPanel({
     super.key,
-    required this.controller,
   });
-
-  final PlayerController controller;
 
   @override
   Widget build(BuildContext context) {

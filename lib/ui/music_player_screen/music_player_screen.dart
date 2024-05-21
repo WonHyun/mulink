@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:mulink/controller/player_controller.dart';
-import 'package:mulink/controller/playlist_controller.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mulink/providers/providers.dart';
 import 'package:mulink/service/util/image_util.dart';
 import 'package:mulink/ui/music_player_screen/layout/audio_progress_bar.dart';
 import 'package:mulink/ui/music_player_screen/layout/extra_controll_panel.dart';
@@ -9,21 +8,23 @@ import 'package:mulink/ui/music_player_screen/layout/extra_controll_panel.dart';
 import 'layout/player_controll_panel.dart';
 import 'layout/player_track_info.dart';
 
-class MusicPlayerScreen extends StatelessWidget {
+class MusicPlayerScreen extends ConsumerWidget {
   const MusicPlayerScreen({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
-    final PlayerController playerController = Get.find();
-    final PlaylistController playlistController = Get.find();
+  Widget build(BuildContext context, WidgetRef ref) {
+    final playerState = ref.watch(playerProvider);
+    final playerNotifier = ref.watch(playerProvider.notifier);
+    final queueState = ref.watch(queueProvider);
+
     return PopScope(
-      child: GetBuilder<PlaylistController>(
-        builder: (_) {
+      child: Builder(
+        builder: (context) {
           Color trackColor = calculateAverageColor(
-            imageData: playlistController.currentPlayTrack?.albumCover,
-            themeColor: context.theme.colorScheme.surface,
+            imageData: queueState.currentTrack?.albumCover,
+            themeColor: Theme.of(context).colorScheme.surface,
           );
           return Scaffold(
             body: Container(
@@ -58,25 +59,25 @@ class MusicPlayerScreen extends StatelessWidget {
                           Flexible(
                             flex: 10,
                             child: PlayerTrackInfo(
-                              controller: playlistController,
+                              track: queueState.currentTrack,
                             ),
                           ),
-                          Flexible(
+                          const Flexible(
                             flex: 1,
-                            child: ExtraControllPanel(
-                              controller: playerController,
-                            ),
+                            child: ExtraControllPanel(),
                           ),
                           Flexible(
                             flex: 1,
                             child: AudioProgressBar(
-                              controller: playerController,
+                              position: playerState.positionState,
+                              onSeek: playerNotifier.seek,
                             ),
                           ),
                           Flexible(
                             flex: 2,
                             child: PlayerControllPanel(
-                              controller: playerController,
+                              state: playerState,
+                              notifier: playerNotifier,
                             ),
                           ),
                         ],
