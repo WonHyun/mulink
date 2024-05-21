@@ -61,7 +61,10 @@ class MulinkAudioHandler extends BaseAudioHandler implements JustAudioHandler {
           _player.bufferedPositionStream,
           _player.durationStream,
           (position, bufferedPosition, duration) => PositionData(
-              position, bufferedPosition, duration ?? Duration.zero));
+                position: position,
+                bufferedPosition: bufferedPosition,
+                duration: duration ?? Duration.zero,
+              ));
 
   @override
   Stream<bool> get shuffleModeEnabledStream => _player.shuffleModeEnabledStream;
