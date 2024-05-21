@@ -17,12 +17,12 @@ class LibraryNotifier extends StateNotifier<LibraryState> {
   //TODO: should be change from getx to riverpod
   final PlaylistController playlistController = Get.find();
 
-  late final StreamSubscription<Track?> _subscription;
+  late final StreamSubscription<Track?> _trackStreamSubscription;
 
   final Map<Track, AudioFile> _audioFileMap = {};
 
   LibraryNotifier() : super(LibraryState()) {
-    _subscription =
+    _trackStreamSubscription =
         playlistController.currentPlayTrackStream.listen(updateSelectedAudio);
   }
 
@@ -56,38 +56,41 @@ class LibraryNotifier extends StateNotifier<LibraryState> {
         ),
       ];
       updateSelectedFolder(libraryItemList.first, libraryItemList.first);
-      await playlistController
-          .addPlaylistItems(getTracksFromAllFolder(state.selectedFolder!));
+      await playlistController.addPlaylistItems(
+          await getTracksFromAllFolder(state.selectedFolder!));
     }
   }
 
   Future<List<LibraryItem>> createLibraryItemList(String currentPath) async {
     final dir = Directory(currentPath);
-    final List<LibraryItem> items = [];
+    final entities =
+        await dir.list(recursive: false, followLinks: false).toList();
+    var items = await Future.wait(
+        entities.map((entity) async => await _toLibraryItem(entity)));
+    return items.whereType<LibraryItem>().toList();
+  }
 
-    await for (var entity in dir.list(recursive: false, followLinks: false)) {
-      if (entity is Directory) {
-        final children = await createLibraryItemList(entity.path);
-        items.add(
-          Folder(
-            name: getFileName(entity.path),
-            path: entity.path,
-            children: children,
-          ),
-        );
-      }
-      if (entity is File && isAudioFile(entity.path)) {
-        final track = await createTrackFromFile(entity);
-        final audioFile = AudioFile(
+  Future<LibraryItem?> _toLibraryItem(FileSystemEntity entity) async {
+    if (entity is Directory) {
+      return Folder(
           name: getFileName(entity.path),
           path: entity.path,
-          track: track,
-        );
-        _audioFileMap[audioFile.track] = audioFile;
-        items.add(audioFile);
-      }
+          children: await createLibraryItemList(entity.path));
+    } else if (entity is File && isAudioFile(entity.path)) {
+      return registerAudioFileMap(
+        AudioFile(
+          name: getFileName(entity.path),
+          path: entity.path,
+          track: await createTrackFromFile(entity),
+        ),
+      );
     }
-    return items;
+    return null;
+  }
+
+  AudioFile registerAudioFileMap(AudioFile file) {
+    _audioFileMap[file.track] = file;
+    return file;
   }
 
   Future<void> selectAudioFile(AudioFile selected) async {
@@ -103,16 +106,13 @@ class LibraryNotifier extends StateNotifier<LibraryState> {
   }
 
   List<Track> getTracksFromFolder(List<LibraryItem> children) {
-    List<Track> tracks = [];
-    for (var entity in children) {
-      if (entity is AudioFile) {
-        tracks.add(entity.track);
-      }
-    }
-    return tracks;
+    return children
+        .whereType<AudioFile>()
+        .map((audioFile) => (audioFile).track)
+        .toList();
   }
 
-  List<Track> getTracksFromAllFolder(Folder root) {
+  Future<List<Track>> getTracksFromAllFolder(Folder root) async {
     List<Track> tracks = [];
     Stack<Folder> stack = Stack<Folder>();
 
@@ -136,7 +136,7 @@ class LibraryNotifier extends StateNotifier<LibraryState> {
 
   @override
   void dispose() {
-    _subscription.cancel();
+    _trackStreamSubscription.cancel();
     super.dispose();
   }
 }
