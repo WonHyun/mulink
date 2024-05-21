@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:mulink/controller/playlist_controller.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mulink/providers/providers.dart';
 import 'package:mulink/service/util/image_util.dart';
 import 'package:mulink/ui/common/mini_player/mini_player_controll_panel.dart';
 import 'package:mulink/ui/common/overflow_marquee.dart';
@@ -8,21 +8,20 @@ import 'package:mulink/ui/home_screen/library_page/playlist_page/component/media
 import 'package:mulink/ui/music_player_screen/music_player_screen.dart';
 import 'package:animations/animations.dart';
 
-class MiniPlayer extends StatelessWidget {
+class MiniPlayer extends ConsumerWidget {
   const MiniPlayer({
     super.key,
   });
 
   @override
-  Widget build(BuildContext context) {
-    final PlaylistController playlistController = Get.find();
-
-    return GetBuilder<PlaylistController>(
-      builder: (_) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final queueState = ref.watch(queueProvider);
+    return Builder(
+      builder: (context) {
         BorderRadius borderRadius = BorderRadius.circular(50);
         Color playerColor = calculateAverageColor(
-          imageData: playlistController.currentPlayTrack?.albumCover,
-          themeColor: context.theme.colorScheme.surface,
+          imageData: queueState.currentTrack?.albumCover,
+          themeColor: Theme.of(context).colorScheme.surface,
         );
         return OpenContainer(
             closedElevation: 0,
@@ -53,8 +52,8 @@ class MiniPlayer extends StatelessWidget {
                             tag: "albumCover",
                             child: MediaThumbImage(
                               size: 40,
-                              albumCoverData: playlistController
-                                  .currentPlayTrack?.albumCover,
+                              albumCoverData:
+                                  queueState.currentTrack?.albumCover,
                             ),
                           ),
                           const SizedBox(width: 20),
@@ -64,13 +63,11 @@ class MiniPlayer extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 OverflowMarquee(
-                                  text: playlistController
-                                          .currentPlayTrack?.title ??
+                                  text: queueState.currentTrack?.title ??
                                       "<unknown>",
                                 ),
                                 OverflowMarquee(
-                                  text: playlistController
-                                          .currentPlayTrack?.artist ??
+                                  text: queueState.currentTrack?.artist ??
                                       "<unknown>",
                                 ),
                               ],

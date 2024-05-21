@@ -1,53 +1,52 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:mulink/controller/player_controller.dart';
+import 'package:mulink/providers/states/music_player_state.dart';
 
-class RepeatButton extends StatelessWidget {
-  const RepeatButton({
+class LoopButton extends StatelessWidget {
+  const LoopButton({
     super.key,
-    required this.repeatState,
-    required this.callback,
+    required this.loopState,
+    required this.onLoop,
     required this.iconSize,
   });
 
-  final RepeatState repeatState;
-  final VoidCallback callback;
+  final LoopState loopState;
+  final VoidCallback onLoop;
   final double iconSize;
 
   @override
   Widget build(BuildContext context) {
     final fontSize = iconSize / 3;
     return IconButton(
-      onPressed: callback.call,
+      onPressed: onLoop,
       icon: Stack(
         alignment: Alignment.center,
         children: [
           Icon(
             Icons.loop,
             size: iconSize,
-            color: repeatState == RepeatState.off
-                ? context.theme.colorScheme.inverseSurface
-                : context.theme.colorScheme.primary,
+            color: loopState == LoopState.off
+                ? Theme.of(context).colorScheme.inverseSurface
+                : Theme.of(context).colorScheme.primary,
           ),
           Builder(
             builder: (context) {
-              switch (repeatState) {
-                case RepeatState.off:
+              switch (loopState) {
+                case LoopState.off:
                   return const Text("");
-                case RepeatState.repeatPlaylist:
+                case LoopState.loopAll:
                   return Text(
                     "A",
                     style: TextStyle(
                       fontSize: fontSize,
-                      color: context.theme.colorScheme.primary,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                   );
-                case RepeatState.repeatSong:
+                case LoopState.loopOne:
                   return Text(
                     "1",
                     style: TextStyle(
                       fontSize: fontSize,
-                      color: context.theme.colorScheme.primary,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                   );
                 default:

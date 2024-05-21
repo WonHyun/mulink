@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 class ShuffleButton extends StatelessWidget {
   const ShuffleButton({
     super.key,
     required this.isShuffled,
-    required this.callback,
+    required this.onShuffle,
     required this.iconSize,
   });
 
   final bool isShuffled;
-  final VoidCallback callback;
+  final VoidCallback onShuffle;
   final double iconSize;
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      onPressed: callback.call,
+      onPressed: onShuffle,
       icon: Icon(Icons.shuffle, size: iconSize),
       color: isShuffled
-          ? context.theme.colorScheme.primary
-          : context.theme.colorScheme.inverseSurface,
+          ? Theme.of(context).colorScheme.primary
+          : Theme.of(context).colorScheme.inverseSurface,
     );
   }
 }

@@ -1,29 +1,26 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:mulink/controller/player_controller.dart';
+import 'package:mulink/model/position_data.dart';
 
 class AudioProgressBar extends StatelessWidget {
   const AudioProgressBar({
     super.key,
-    required this.controller,
+    required this.position,
+    required this.onSeek,
   });
 
-  final PlayerController controller;
+  final PositionData position;
+  final Function(Duration) onSeek;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: GetBuilder<PlayerController>(
-        builder: (_) {
-          return ProgressBar(
-            progress: controller.progressBarState.current,
-            buffered: controller.progressBarState.buffered,
-            total: controller.progressBarState.total,
-            onSeek: controller.seek,
-          );
-        },
+      child: ProgressBar(
+        progress: position.position,
+        buffered: position.bufferedPosition,
+        total: position.duration,
+        onSeek: onSeek,
       ),
     );
   }

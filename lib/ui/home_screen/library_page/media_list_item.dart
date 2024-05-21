@@ -6,12 +6,12 @@ class MediaListItem extends StatelessWidget {
   const MediaListItem({
     super.key,
     required this.track,
-    required this.callback,
+    required this.onSelect,
     required this.isSelected,
   });
 
   final Track track;
-  final VoidCallback callback;
+  final VoidCallback onSelect;
   final bool isSelected;
 
   @override
@@ -31,7 +31,7 @@ class MediaListItem extends StatelessWidget {
         overflow: TextOverflow.ellipsis,
       ),
       selected: isSelected,
-      onTap: callback,
+      onTap: onSelect,
     );
   }
 }
