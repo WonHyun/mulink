@@ -24,7 +24,7 @@ class LibraryPage extends ConsumerWidget {
               icon: const Icon(Icons.arrow_back_ios),
             ),
             IconButton(
-              onPressed: libraryNotifier.setRootPath,
+              onPressed: libraryNotifier.setPathFromFilePicker,
               icon: const Icon(Icons.folder_open),
             ),
             Expanded(

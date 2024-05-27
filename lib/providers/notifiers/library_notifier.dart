@@ -41,20 +41,24 @@ class LibraryNotifier extends StateNotifier<LibraryState> {
     state = state.copyWith(selectedFolder: selected, parentFolder: parent);
   }
 
-  Future<void> setRootPath() async {
+  Future<void> setRootPath(Directory root) async {
+    updateRoot(root);
+    final libraryItemList = [
+      Folder(
+        name: getFileName(state.root!.path),
+        path: state.root!.path,
+        children: await createLibraryItemList(state.root!.path),
+      ),
+    ];
+    updateSelectedFolder(libraryItemList.first, libraryItemList.first);
+    await queueNotifier
+        .addPlaylistItems(await getTracksFromAllFolder(state.selectedFolder!));
+  }
+
+  Future<void> setPathFromFilePicker() async {
     Directory? newRoot = await getDirectoryFromFilePicker();
     if (newRoot != null) {
-      updateRoot(newRoot);
-      final libraryItemList = [
-        Folder(
-          name: getFileName(state.root!.path),
-          path: state.root!.path,
-          children: await createLibraryItemList(state.root!.path),
-        ),
-      ];
-      updateSelectedFolder(libraryItemList.first, libraryItemList.first);
-      await queueNotifier.addPlaylistItems(
-          await getTracksFromAllFolder(state.selectedFolder!));
+      setRootPath(newRoot);
     }
   }
 
