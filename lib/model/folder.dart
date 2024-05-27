@@ -12,7 +12,7 @@ class Folder implements LibraryItem {
 
   final List<LibraryItem> children;
 
-  Folder({
+  const Folder({
     required this.name,
     required this.path,
     required this.children,

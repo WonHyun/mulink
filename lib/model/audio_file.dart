@@ -13,7 +13,7 @@ class AudioFile implements LibraryItem {
 
   final Track track;
 
-  AudioFile({
+  const AudioFile({
     required this.name,
     required this.path,
     required this.track,
