@@ -16,17 +16,14 @@ class PlayerTrackInfo extends StatelessWidget {
     return Column(
       children: [
         Flexible(
-          child: Hero(
-            tag: "albumCover",
-            child: AlbumCoverImage(
-              albumCoverData: track?.albumCover,
-            ),
+          child: AlbumCoverImage(
+            albumCoverData: track?.albumCover,
           ),
         ),
         const SizedBox(height: 30),
         OverflowMarquee(
           text: track?.title ?? "<unknown>",
-          textStyle: Theme.of(context).textTheme.headlineMedium,
+          textStyle: Theme.of(context).textTheme.headlineLarge,
         ),
         const SizedBox(height: 10),
         OverflowMarquee(

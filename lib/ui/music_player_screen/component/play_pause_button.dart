@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mulink/providers/providers.dart';
 
 class PlayPauseButton extends ConsumerWidget {
@@ -30,7 +31,7 @@ class PlayPauseButton extends ConsumerWidget {
           splashColor: Colors.grey,
           onTap: callback,
           child: Center(
-            child: Icon(
+            child: FaIcon(
               iconData,
               color: Theme.of(context).colorScheme.inverseSurface,
               size: buttonSize / 2,
