@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mulink/providers/providers.dart';
 
-class PlayPauseButton extends StatelessWidget {
+class PlayPauseButton extends ConsumerWidget {
   const PlayPauseButton({
     super.key,
     required this.callback,
@@ -16,11 +17,11 @@ class PlayPauseButton extends StatelessWidget {
   final Color color;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: color,
+        color: ref.watch(queueProvider).trackColor ?? color,
       ),
       child: Material(
         color: Colors.transparent,
@@ -29,7 +30,7 @@ class PlayPauseButton extends StatelessWidget {
           splashColor: Colors.grey,
           onTap: callback,
           child: Center(
-            child: FaIcon(
+            child: Icon(
               iconData,
               color: Theme.of(context).colorScheme.inverseSurface,
               size: buttonSize / 2,

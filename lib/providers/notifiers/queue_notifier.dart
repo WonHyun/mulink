@@ -1,11 +1,13 @@
 import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mulink/global/extension/type_extension.dart';
 import 'package:mulink/model/track.dart';
 import 'package:mulink/providers/states/queue_state.dart';
 import 'package:mulink/service/audio/mulink_audio_handler.dart';
+import 'package:mulink/service/util/image_util.dart';
 // import 'package:mulink/test/playlist_mock.dart';
 
 class QueueNotifier extends StateNotifier<QueueState> {
@@ -34,6 +36,18 @@ class QueueNotifier extends StateNotifier<QueueState> {
           (element) => element.id == mediaItem?.id,
         ),
       );
+    });
+    currentTrackStream.listen((track) {
+      if (track != null && track.albumCover != null) {
+        state = state.copyWith(
+          trackColor: calculateAverageColor(
+            imageData: track.albumCover,
+            themeColor: Colors.black,
+          ),
+        );
+      } else {
+        state = state.copyWith(trackColor: Colors.indigo);
+      }
     });
   }
 

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mulink/providers/providers.dart';
-import 'package:mulink/service/util/image_util.dart';
 import 'package:mulink/ui/common/mini_player/mini_player_controll_panel.dart';
 import 'package:mulink/ui/common/overflow_marquee.dart';
 import 'package:mulink/ui/home_screen/library_page/playlist_page/component/media_thumb_image.dart';
@@ -16,13 +15,10 @@ class MiniPlayer extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final queueState = ref.watch(queueProvider);
+    final Color playerColor = queueState.trackColor ?? Colors.indigo;
     return Builder(
       builder: (context) {
         BorderRadius borderRadius = BorderRadius.circular(50);
-        Color playerColor = calculateAverageColor(
-          imageData: queueState.currentTrack?.albumCover,
-          themeColor: Theme.of(context).colorScheme.surface,
-        );
         return OpenContainer(
             closedElevation: 0,
             closedColor: playerColor,

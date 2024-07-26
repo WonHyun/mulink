@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mulink/providers/providers.dart';
-// import 'package:mulink/service/util/image_util.dart';
 import 'package:mulink/ui/music_player_screen/layout/audio_progress_bar.dart';
 import 'package:mulink/ui/music_player_screen/layout/extra_controll_panel.dart';
 
@@ -24,10 +23,6 @@ class MusicPlayerScreen extends ConsumerWidget {
     return PopScope(
       child: Builder(
         builder: (context) {
-          // Color trackColor = calculateAverageColor(
-          //   imageData: queueState.currentTrack?.albumCover,
-          //   themeColor: Theme.of(context).colorScheme.surface,
-          // );
           return Scaffold(
             body: Container(
               decoration: BoxDecoration(
