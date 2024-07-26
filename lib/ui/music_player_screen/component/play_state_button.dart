@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mulink/providers/states/music_player_state.dart';
 
 import 'play_pause_button.dart';
@@ -30,19 +31,13 @@ class PlayStateButton extends StatelessWidget {
             case PlayButtonState.playing:
               return PlayPauseButton(
                 callback: onPause,
-                iconData: Icons.pause,
+                iconData: FontAwesomeIcons.pause,
                 buttonSize: buttonSize,
               );
             case PlayButtonState.paused:
               return PlayPauseButton(
                 callback: onPlay,
-                iconData: Icons.play_arrow,
-                buttonSize: buttonSize,
-              );
-            default:
-              return PlayPauseButton(
-                callback: onPlay,
-                iconData: Icons.play_arrow_outlined,
+                iconData: FontAwesomeIcons.play,
                 buttonSize: buttonSize,
               );
           }

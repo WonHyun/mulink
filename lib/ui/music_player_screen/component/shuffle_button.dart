@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ShuffleButton extends StatelessWidget {
   const ShuffleButton({
@@ -16,7 +17,10 @@ class ShuffleButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       onPressed: onShuffle,
-      icon: Icon(Icons.shuffle, size: iconSize),
+      icon: Icon(
+        FontAwesomeIcons.shuffle,
+        size: iconSize,
+      ),
       color: isShuffled
           ? Theme.of(context).colorScheme.primary
           : Theme.of(context).colorScheme.inverseSurface,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class PlayPauseButton extends StatelessWidget {
   const PlayPauseButton({
@@ -6,29 +7,33 @@ class PlayPauseButton extends StatelessWidget {
     required this.callback,
     required this.iconData,
     required this.buttonSize,
+    this.color = Colors.indigo,
   });
 
   final VoidCallback callback;
   final IconData iconData;
   final double buttonSize;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Theme.of(context).colorScheme.primary,
+        color: color,
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(100),
-          splashColor: Theme.of(context).colorScheme.secondary,
+          borderRadius: BorderRadius.circular(360),
+          splashColor: Colors.grey,
           onTap: callback,
-          child: Icon(
-            iconData,
-            color: Theme.of(context).colorScheme.inverseSurface,
-            size: buttonSize / 1.5,
+          child: Center(
+            child: FaIcon(
+              iconData,
+              color: Theme.of(context).colorScheme.inverseSurface,
+              size: buttonSize / 2,
+            ),
           ),
         ),
       ),

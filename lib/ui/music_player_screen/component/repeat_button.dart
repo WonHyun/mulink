@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mulink/providers/states/music_player_state.dart';
 
 class LoopButton extends StatelessWidget {
@@ -21,8 +22,8 @@ class LoopButton extends StatelessWidget {
       icon: Stack(
         alignment: Alignment.center,
         children: [
-          Icon(
-            Icons.loop,
+          FaIcon(
+            FontAwesomeIcons.repeat,
             size: iconSize,
             color: loopState == LoopState.off
                 ? Theme.of(context).colorScheme.inverseSurface

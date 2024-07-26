@@ -1,7 +1,9 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mulink/providers/providers.dart';
-import 'package:mulink/service/util/image_util.dart';
+// import 'package:mulink/service/util/image_util.dart';
 import 'package:mulink/ui/music_player_screen/layout/audio_progress_bar.dart';
 import 'package:mulink/ui/music_player_screen/layout/extra_controll_panel.dart';
 
@@ -22,69 +24,86 @@ class MusicPlayerScreen extends ConsumerWidget {
     return PopScope(
       child: Builder(
         builder: (context) {
-          Color trackColor = calculateAverageColor(
-            imageData: queueState.currentTrack?.albumCover,
-            themeColor: Theme.of(context).colorScheme.surface,
-          );
+          // Color trackColor = calculateAverageColor(
+          //   imageData: queueState.currentTrack?.albumCover,
+          //   themeColor: Theme.of(context).colorScheme.surface,
+          // );
           return Scaffold(
             body: Container(
               decoration: BoxDecoration(
-                color: trackColor,
-              ),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 15, vertical: 10),
-                    child: AppBar(
-                      backgroundColor: Colors.transparent,
-                      surfaceTintColor: Colors.transparent,
-                      leading: IconButton(
-                        onPressed: () => Navigator.pop(context),
-                        icon: const Icon(Icons.keyboard_arrow_down, size: 30),
-                      ),
-                      actions: [
-                        IconButton(
-                          onPressed: () => {},
-                          icon: const Icon(Icons.more_vert, size: 30),
+                image: queueState.currentTrack?.albumCover != null
+                    ? DecorationImage(
+                        image: MemoryImage(
+                          queueState.currentTrack!.albumCover!,
                         ),
-                      ],
-                    ),
-                  ),
-                  Expanded(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 30),
-                      child: Column(
-                        children: [
-                          Flexible(
-                            flex: 10,
-                            child: PlayerTrackInfo(
-                              track: queueState.currentTrack,
-                            ),
-                          ),
-                          const Flexible(
-                            flex: 1,
-                            child: ExtraControllPanel(),
-                          ),
-                          Flexible(
-                            flex: 1,
-                            child: AudioProgressBar(
-                              position: playerState.positionState,
-                              onSeek: playerNotifier.seek,
-                            ),
-                          ),
-                          Flexible(
-                            flex: 2,
-                            child: PlayerControllPanel(
-                              state: playerState,
-                              notifier: playerNotifier,
-                            ),
+                        fit: BoxFit.cover,
+                        colorFilter: ColorFilter.mode(
+                          Colors.black.withOpacity(0.5),
+                          BlendMode.darken,
+                        ),
+                      )
+                    : null,
+              ),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(
+                  sigmaX: 10.0,
+                  sigmaY: 10.0,
+                ),
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 10),
+                      child: AppBar(
+                        backgroundColor: Colors.transparent,
+                        surfaceTintColor: Colors.transparent,
+                        leading: IconButton(
+                          onPressed: () => Navigator.pop(context),
+                          icon: const Icon(Icons.keyboard_arrow_down, size: 30),
+                        ),
+                        actions: [
+                          IconButton(
+                            onPressed: () => {},
+                            icon: const Icon(Icons.more_vert, size: 30),
                           ),
                         ],
                       ),
                     ),
-                  ),
-                ],
+                    Expanded(
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 30),
+                        child: Column(
+                          children: [
+                            Flexible(
+                              flex: 10,
+                              child: PlayerTrackInfo(
+                                track: queueState.currentTrack,
+                              ),
+                            ),
+                            const Flexible(
+                              flex: 1,
+                              child: ExtraControllPanel(),
+                            ),
+                            Flexible(
+                              flex: 1,
+                              child: AudioProgressBar(
+                                position: playerState.positionState,
+                                onSeek: playerNotifier.seek,
+                              ),
+                            ),
+                            Flexible(
+                              flex: 2,
+                              child: PlayerControllPanel(
+                                state: playerState,
+                                notifier: playerNotifier,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           );

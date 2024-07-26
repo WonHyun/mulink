@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mulink/global/extension/context_extension.dart';
 import 'package:mulink/providers/notifiers/music_player_notifier.dart';
 import 'package:mulink/providers/states/music_player_state.dart';
@@ -21,44 +22,46 @@ class PlayerControllPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final iconSize = math.min(context.deviceWidth / 10, 50.0);
+    final iconSize = math.min(context.deviceWidth / 12, 50.0);
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         ShuffleButton(
           isShuffled: state.isShuffled,
           onShuffle: notifier.toggleShuffle,
-          iconSize: iconSize,
+          iconSize: iconSize * 0.8,
         ),
+        const SizedBox(width: 10),
         IconButton(
           onPressed: notifier.previous,
-          icon: Icon(
-            Icons.skip_previous,
-            size: iconSize,
+          icon: FaIcon(
+            FontAwesomeIcons.backwardStep,
+            size: iconSize * 0.8,
             color: Theme.of(context).colorScheme.inverseSurface,
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: PlayStateButton(
-            playButtonState: state.playButtonState,
-            onPlay: notifier.play,
-            onPause: notifier.pause,
-            buttonSize: iconSize * 1.5,
-          ),
+        const SizedBox(width: 10),
+        PlayStateButton(
+          playButtonState: state.playButtonState,
+          onPlay: notifier.play,
+          onPause: notifier.pause,
+          buttonSize: iconSize * 1.5,
         ),
+        const SizedBox(width: 10),
         IconButton(
           onPressed: notifier.next,
-          icon: Icon(
-            Icons.skip_next,
-            size: iconSize,
+          icon: FaIcon(
+            FontAwesomeIcons.forwardStep,
+            size: iconSize * 0.8,
             color: Theme.of(context).colorScheme.inverseSurface,
           ),
         ),
+        const SizedBox(width: 10),
         LoopButton(
           loopState: state.loopState,
           onLoop: notifier.toggleLoopMode,
-          iconSize: iconSize,
+          iconSize: iconSize * 0.8,
         ),
       ],
     );
