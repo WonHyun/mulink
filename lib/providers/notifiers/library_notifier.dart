@@ -11,6 +11,7 @@ import 'package:mulink/providers/notifiers/queue_notifier.dart';
 import 'package:mulink/providers/states/library_state.dart';
 import 'package:mulink/service/util/file_util.dart';
 import 'package:mulink/service/util/parse_util.dart';
+import 'package:mulink/service/util/setting_util.dart';
 
 class LibraryNotifier extends StateNotifier<LibraryState> {
   final QueueNotifier queueNotifier;
@@ -21,6 +22,18 @@ class LibraryNotifier extends StateNotifier<LibraryState> {
   LibraryNotifier({required this.queueNotifier}) : super(LibraryState()) {
     _trackStreamSubscription =
         queueNotifier.currentTrackStream.listen(updateSelectedAudio);
+    loadSettingRootPath();
+  }
+
+  Future<void> loadSettingRootPath() async {
+    try {
+      final path = await loadRootPathSetting();
+      if (path != "") {
+        await setRootPath(Directory(path));
+      }
+    } catch (err) {
+      print(err);
+    }
   }
 
   void updateSelectedAudio(Track? track) {
@@ -31,6 +44,7 @@ class LibraryNotifier extends StateNotifier<LibraryState> {
 
   void updateRoot(Directory directory) {
     state = state.copyWith(root: directory);
+    saveRootPathSetting(directory.path);
   }
 
   void updateLibraryItems(List<LibraryItem> items) {

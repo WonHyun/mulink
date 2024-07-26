@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:mulink/global/constant/value.dart';
 import 'package:mulink/service/service_rocator.dart';
 import 'package:mulink/service/util/file_util.dart';
@@ -13,6 +14,8 @@ Future<void> initializeApp() async {
 
   // set up .env files
   await dotenv.load(fileName: "secrets.env");
+
+  await Hive.initFlutter();
 
   await setupServiceLocator();
 
