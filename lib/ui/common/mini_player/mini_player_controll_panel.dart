@@ -17,7 +17,7 @@ class MiniPlayerControllPanel extends ConsumerWidget {
         IconButton(
           onPressed: playerNotifier.previous,
           icon: const Icon(Icons.skip_previous),
-          color: Theme.of(context).colorScheme.inverseSurface,
+          color: Colors.white,
         ),
         PlayStateButton(
           playButtonState: playerState.playButtonState,
@@ -28,7 +28,7 @@ class MiniPlayerControllPanel extends ConsumerWidget {
         IconButton(
           onPressed: playerNotifier.next,
           icon: const Icon(Icons.skip_next),
-          color: Theme.of(context).colorScheme.inverseSurface,
+          color: Colors.white,
         ),
       ],
     );

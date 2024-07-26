@@ -40,10 +40,7 @@ class QueueNotifier extends StateNotifier<QueueState> {
     currentTrackStream.listen((track) {
       if (track != null && track.albumCover != null) {
         state = state.copyWith(
-          trackColor: calculateAverageColor(
-            imageData: track.albumCover,
-            themeColor: Colors.black,
-          ),
+          trackColor: calculateAverageColor(imageData: track.albumCover),
         );
       } else {
         state = state.copyWith(trackColor: Colors.indigo);

@@ -20,6 +20,8 @@ class MusicPlayerScreen extends ConsumerWidget {
     final playerNotifier = ref.watch(playerProvider.notifier);
     final queueState = ref.watch(queueProvider);
 
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+
     return PopScope(
       child: Builder(
         builder: (context) {
@@ -33,8 +35,10 @@ class MusicPlayerScreen extends ConsumerWidget {
                         ),
                         fit: BoxFit.cover,
                         colorFilter: ColorFilter.mode(
-                          Colors.black.withOpacity(0.5),
-                          BlendMode.darken,
+                          isDarkMode
+                              ? Colors.black.withOpacity(0.5)
+                              : Colors.white.withOpacity(0.5),
+                          isDarkMode ? BlendMode.darken : BlendMode.lighten,
                         ),
                       )
                     : null,

@@ -59,10 +59,14 @@ class MiniPlayer extends ConsumerWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 OverflowMarquee(
+                                  textStyle:
+                                      const TextStyle(color: Colors.white),
                                   text: queueState.currentTrack?.title ??
                                       "<unknown>",
                                 ),
                                 OverflowMarquee(
+                                  textStyle:
+                                      const TextStyle(color: Colors.white),
                                   text: queueState.currentTrack?.artist ??
                                       "<unknown>",
                                 ),

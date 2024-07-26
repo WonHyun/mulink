@@ -10,12 +10,14 @@ class PlayPauseButton extends ConsumerWidget {
     required this.iconData,
     required this.buttonSize,
     this.color = Colors.indigo,
+    this.iconColor = Colors.white,
   });
 
   final VoidCallback callback;
   final IconData iconData;
   final double buttonSize;
   final Color color;
+  final Color iconColor;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -33,7 +35,7 @@ class PlayPauseButton extends ConsumerWidget {
           child: Center(
             child: FaIcon(
               iconData,
-              color: Theme.of(context).colorScheme.inverseSurface,
+              color: iconColor,
               size: buttonSize / 2,
             ),
           ),

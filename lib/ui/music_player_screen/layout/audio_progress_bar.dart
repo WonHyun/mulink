@@ -21,6 +21,11 @@ class AudioProgressBar extends StatelessWidget {
         buffered: position.bufferedPosition,
         total: position.duration,
         onSeek: onSeek,
+        barHeight: 10,
+        progressBarColor: Theme.of(context).colorScheme.inverseSurface,
+        thumbColor: Theme.of(context).colorScheme.inverseSurface,
+        baseBarColor:
+            Theme.of(context).colorScheme.inverseSurface.withOpacity(0.4),
       ),
     );
   }
