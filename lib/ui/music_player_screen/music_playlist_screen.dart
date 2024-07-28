@@ -14,9 +14,9 @@ class MusicPlaylistScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final queueState = ref.watch(queueProvider);
     return PopScope(
-      child: Scaffold(
-        body: SafeArea(
-          child: Padding(
+      child: SafeArea(
+        child: Scaffold(
+          body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               children: [
@@ -58,22 +58,17 @@ class MusicPlaylistScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: 20),
                 Expanded(
-                  child: Container(
+                  child: Material(
                     clipBehavior: Clip.hardEdge,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .primary
-                          .withOpacity(0.5),
-                      borderRadius: const BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
-                      ),
-                    ),
+                    borderRadius: BorderRadius.circular(20),
+                    color:
+                        Theme.of(context).colorScheme.primary.withOpacity(0.5),
                     child: ListView.builder(
                       shrinkWrap: true,
                       itemCount: queueState.queue.length,
                       itemBuilder: (context, index) {
+                        final track = queueState.queue[index];
+                        final nowPlaying = queueState.currentTrack;
                         return Container(
                           decoration: const BoxDecoration(
                             border: Border(
@@ -81,25 +76,23 @@ class MusicPlaylistScreen extends ConsumerWidget {
                             ),
                           ),
                           child: ListTile(
+                            tileColor:
+                                track == nowPlaying ? Colors.deepPurple : null,
                             onTap: () => ref
                                 .read(queueProvider.notifier)
-                                .setCurrentTrack(queueState.queue[index]),
-                            textColor: queueState.queue[index] ==
-                                    queueState.currentTrack
-                                ? Theme.of(context).colorScheme.primary
-                                : null,
+                                .setCurrentTrack(track),
+                            textColor:
+                                track == nowPlaying ? Colors.white : null,
                             leading: AlbumCoverImage(
-                              albumCoverData:
-                                  queueState.queue[index].albumCover,
+                              albumCoverData: track.albumCover,
                             ),
                             title: Text(
-                              queueState.queue[index].title,
+                              track.title,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
                             subtitle: Text(
-                              queueState.queue[index].artist ??
-                                  "<unknown artist>",
+                              track.artist ?? "<unknown artist>",
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -109,6 +102,7 @@ class MusicPlaylistScreen extends ConsumerWidget {
                     ),
                   ),
                 ),
+                const SizedBox(height: 20),
               ],
             ),
           ),
