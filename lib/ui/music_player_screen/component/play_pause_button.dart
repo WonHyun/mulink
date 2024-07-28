@@ -6,13 +6,13 @@ class PlayPauseButton extends StatelessWidget {
     required this.callback,
     required this.iconData,
     required this.buttonSize,
-    this.iconColor = Colors.white,
+    this.iconColor,
   });
 
   final VoidCallback callback;
   final IconData iconData;
   final double buttonSize;
-  final Color iconColor;
+  final Color? iconColor;
 
   @override
   Widget build(BuildContext context) {

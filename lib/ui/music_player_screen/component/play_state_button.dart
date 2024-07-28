@@ -11,12 +11,14 @@ class PlayStateButton extends StatelessWidget {
     required this.onPlay,
     required this.onPause,
     required this.buttonSize,
+    this.iconColor,
   });
 
   final PlayButtonState playButtonState;
   final VoidCallback onPlay;
   final VoidCallback onPause;
   final double buttonSize;
+  final Color? iconColor;
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +32,14 @@ class PlayStateButton extends StatelessWidget {
               callback: onPause,
               iconData: FontAwesomeIcons.pause,
               buttonSize: buttonSize,
+              iconColor: iconColor,
             );
           case PlayButtonState.paused:
             return PlayPauseButton(
               callback: onPlay,
               iconData: FontAwesomeIcons.play,
               buttonSize: buttonSize,
+              iconColor: iconColor,
             );
         }
       },

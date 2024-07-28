@@ -24,6 +24,7 @@ class MiniPlayerControllPanel extends ConsumerWidget {
           onPlay: playerNotifier.play,
           onPause: playerNotifier.pause,
           buttonSize: 20,
+          iconColor: Colors.white,
         ),
         IconButton(
           onPressed: playerNotifier.next,
