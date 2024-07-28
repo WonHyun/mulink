@@ -7,11 +7,44 @@ import 'package:mulink/ui/common/overflow_marquee.dart';
 import 'package:mulink/ui/music_player_screen/component/album_cover_image.dart';
 import 'package:mulink/ui/music_player_screen/layout/media_control_panel.dart';
 
-class MusicPlaylistScreen extends ConsumerWidget {
+class MusicPlaylistScreen extends ConsumerStatefulWidget {
   const MusicPlaylistScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<MusicPlaylistScreen> createState() =>
+      _MusicPlaylistScreenState();
+}
+
+class _MusicPlaylistScreenState extends ConsumerState<MusicPlaylistScreen> {
+  final ScrollController _controller = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_controller.hasClients) {
+        const itemHeight = 65.0;
+        final index = ref.read(queueProvider.notifier).currentTrackIndex;
+
+        double scrollPosition = index == 0 ? 0.0 : itemHeight * (index - 1);
+
+        _controller.animateTo(
+          scrollPosition,
+          duration: const Duration(milliseconds: 1000),
+          curve: Curves.easeInOut,
+        );
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final queueState = ref.watch(queueProvider);
     return PopScope(
       child: SafeArea(
@@ -64,6 +97,7 @@ class MusicPlaylistScreen extends ConsumerWidget {
                     color:
                         Theme.of(context).colorScheme.primary.withOpacity(0.5),
                     child: ListView.builder(
+                      controller: _controller,
                       shrinkWrap: true,
                       itemCount: queueState.queue.length,
                       itemBuilder: (context, index) {
