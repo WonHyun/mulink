@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mulink/providers/providers.dart';
-import 'package:mulink/ui/music_player_screen/layout/player_track_info.dart';
+import 'package:mulink/ui/music_player_screen/component/album_cover_image.dart';
+import 'package:mulink/ui/music_player_screen/layout/media_info_marquee.dart';
 
 class MusicPageView extends ConsumerStatefulWidget {
   const MusicPageView({
@@ -65,7 +66,17 @@ class _MusicPageViewState extends ConsumerState<MusicPageView> {
               scale: scale,
               child: Opacity(
                 opacity: opacity,
-                child: PlayerTrackInfo(track: track),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: AlbumCoverImage(
+                        albumCoverData: track.albumCover,
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    MediaInfoMarquee(track: track),
+                  ],
+                ),
               ),
             );
           },
