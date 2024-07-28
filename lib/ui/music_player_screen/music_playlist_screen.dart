@@ -28,11 +28,7 @@ class _MusicPlaylistScreenState extends ConsumerState<MusicPlaylistScreen> {
 
         double scrollPosition = index == 0 ? 0.0 : itemHeight * (index - 1);
 
-        _controller.animateTo(
-          scrollPosition,
-          duration: const Duration(milliseconds: 1000),
-          curve: Curves.easeInOut,
-        );
+        _controller.jumpTo(scrollPosition);
       }
     });
   }
