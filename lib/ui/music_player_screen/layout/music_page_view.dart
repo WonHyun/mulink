@@ -15,19 +15,15 @@ class MusicPageView extends ConsumerStatefulWidget {
 class _MusicPageViewState extends ConsumerState<MusicPageView> {
   late final PageController _controller;
 
-  int _index = 0;
+  late int _index;
 
   @override
   void initState() {
     super.initState();
 
-    final queue = ref.read(queueProvider).queue;
-    final currentTrack = ref.read(queueProvider).currentTrack;
-    if (currentTrack != null) {
-      _index = queue.indexOf(currentTrack);
-    }
-
-    _controller = PageController(initialPage: _index);
+    final currentIndex = ref.read(queueProvider.notifier).currentTrackIndex;
+    _controller = PageController(initialPage: currentIndex);
+    _index = currentIndex;
 
     _controller.addListener(() {
       if (_controller.page != null) {
@@ -48,15 +44,31 @@ class _MusicPageViewState extends ConsumerState<MusicPageView> {
 
   @override
   Widget build(BuildContext context) {
-    final queue = ref.watch(queueProvider).queue;
+    final queue = ref.read(queueProvider).queue;
     return PageView.builder(
       controller: _controller,
       itemCount: queue.length,
       itemBuilder: (context, index) {
         final track = queue[index];
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: PlayerTrackInfo(track: track),
+        return AnimatedBuilder(
+          animation: _controller,
+          builder: (context, child) {
+            var scale = 1.0;
+            var opacity = 1.0;
+            if (_controller.position.haveDimensions) {
+              scale = (1 - ((index - _controller.page!).abs() * 0.1))
+                  .clamp(0.0, 1.0);
+              opacity = (1 - ((index - _controller.page!).abs() * 0.5))
+                  .clamp(0.0, 1.0);
+            }
+            return Transform.scale(
+              scale: scale,
+              child: Opacity(
+                opacity: opacity,
+                child: PlayerTrackInfo(track: track),
+              ),
+            );
+          },
         );
       },
     );

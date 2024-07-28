@@ -16,6 +16,9 @@ class QueueNotifier extends StateNotifier<QueueState> {
   final _currentTrackController = StreamController<Track?>.broadcast();
   Stream<Track?> get currentTrackStream => _currentTrackController.stream;
 
+  int get currentTrackIndex =>
+      state.currentTrack != null ? state.queue.indexOf(state.currentTrack!) : 0;
+
   List<MediaItem> _oldPlaylist = [];
 
   QueueNotifier({required this.audioHandler}) : super(QueueState()) {

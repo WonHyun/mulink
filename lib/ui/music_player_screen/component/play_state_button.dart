@@ -20,29 +20,25 @@ class PlayStateButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: buttonSize,
-      height: buttonSize,
-      child: Builder(
-        builder: (context) {
-          switch (playButtonState) {
-            case PlayButtonState.loading:
-              return const CircularProgressIndicator();
-            case PlayButtonState.playing:
-              return PlayPauseButton(
-                callback: onPause,
-                iconData: FontAwesomeIcons.pause,
-                buttonSize: buttonSize,
-              );
-            case PlayButtonState.paused:
-              return PlayPauseButton(
-                callback: onPlay,
-                iconData: FontAwesomeIcons.play,
-                buttonSize: buttonSize,
-              );
-          }
-        },
-      ),
+    return Builder(
+      builder: (context) {
+        switch (playButtonState) {
+          case PlayButtonState.loading:
+            return const CircularProgressIndicator();
+          case PlayButtonState.playing:
+            return PlayPauseButton(
+              callback: onPause,
+              iconData: FontAwesomeIcons.pause,
+              buttonSize: buttonSize,
+            );
+          case PlayButtonState.paused:
+            return PlayPauseButton(
+              callback: onPlay,
+              iconData: FontAwesomeIcons.play,
+              buttonSize: buttonSize,
+            );
+        }
+      },
     );
   }
 }

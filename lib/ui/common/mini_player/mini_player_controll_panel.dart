@@ -23,7 +23,7 @@ class MiniPlayerControllPanel extends ConsumerWidget {
           playButtonState: playerState.playButtonState,
           onPlay: playerNotifier.play,
           onPause: playerNotifier.pause,
-          buttonSize: 40,
+          buttonSize: 20,
         ),
         IconButton(
           onPressed: playerNotifier.next,
