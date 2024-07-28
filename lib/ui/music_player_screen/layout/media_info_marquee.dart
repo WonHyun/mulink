@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mulink/global/enum.dart';
 import 'package:mulink/model/track.dart';
 import 'package:mulink/ui/common/overflow_marquee.dart';
 
@@ -13,8 +12,8 @@ class MediaInfoMarquee extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Hero(
-      tag: HeroTags.mediaInfoMarquee,
+    return Material(
+      type: MaterialType.transparency,
       child: Column(
         children: [
           OverflowMarquee(

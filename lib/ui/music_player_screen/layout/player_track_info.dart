@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mulink/global/enum.dart';
 import 'package:mulink/model/track.dart';
 import 'package:mulink/ui/music_player_screen/component/album_cover_image.dart';
 import 'package:mulink/ui/music_player_screen/layout/media_info_marquee.dart';
@@ -16,8 +17,11 @@ class PlayerTrackInfo extends StatelessWidget {
     return Column(
       children: [
         Expanded(
-          child: AlbumCoverImage(
-            albumCoverData: track?.albumCover,
+          child: Hero(
+            tag: HeroTags.albumCoverImage,
+            child: AlbumCoverImage(
+              albumCoverData: track?.albumCover,
+            ),
           ),
         ),
         const SizedBox(height: 30),

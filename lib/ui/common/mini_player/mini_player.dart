@@ -4,7 +4,7 @@ import 'package:mulink/global/enum.dart';
 import 'package:mulink/providers/providers.dart';
 import 'package:mulink/ui/common/mini_player/mini_player_controll_panel.dart';
 import 'package:mulink/ui/common/overflow_marquee.dart';
-import 'package:mulink/ui/home_screen/library_page/playlist_page/component/media_thumb_image.dart';
+import 'package:mulink/ui/music_player_screen/component/album_cover_image.dart';
 import 'package:mulink/ui/music_player_screen/music_player_screen.dart';
 import 'package:animations/animations.dart';
 
@@ -45,31 +45,28 @@ class MiniPlayer extends ConsumerWidget {
                     children: [
                       Hero(
                         tag: HeroTags.albumCoverImage,
-                        child: MediaThumbImage(
-                          size: 40,
+                        child: AlbumCoverImage(
+                          maxSize: 40,
                           albumCoverData: queueState.currentTrack?.albumCover,
                         ),
                       ),
                       const SizedBox(width: 20),
                       Expanded(
-                        child: Hero(
-                          tag: HeroTags.mediaInfoMarquee,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              OverflowMarquee(
-                                textStyle: const TextStyle(color: Colors.white),
-                                text: queueState.currentTrack?.title ??
-                                    "<unknown>",
-                              ),
-                              OverflowMarquee(
-                                textStyle: const TextStyle(color: Colors.white),
-                                text: queueState.currentTrack?.artist ??
-                                    "<unknown>",
-                              ),
-                            ],
-                          ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            OverflowMarquee(
+                              textStyle: const TextStyle(color: Colors.white),
+                              text:
+                                  queueState.currentTrack?.title ?? "<unknown>",
+                            ),
+                            OverflowMarquee(
+                              textStyle: const TextStyle(color: Colors.white),
+                              text: queueState.currentTrack?.artist ??
+                                  "<unknown>",
+                            ),
+                          ],
                         ),
                       ),
                     ],

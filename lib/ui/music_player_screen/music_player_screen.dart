@@ -2,13 +2,39 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mulink/providers/providers.dart';
 import 'package:mulink/ui/music_player_screen/layout/music_screen_body.dart';
+import 'package:mulink/ui/music_player_screen/music_playlist_screen.dart';
 
 class MusicPlayerScreen extends ConsumerWidget {
   const MusicPlayerScreen({
     super.key,
   });
+
+  void _onTapBottom(BuildContext context) {
+    Navigator.push(
+      context,
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) {
+          final curved = CurvedAnimation(
+            parent: animation,
+            curve: Curves.easeOut,
+          );
+
+          final position = Tween<Offset>(
+            begin: const Offset(0, 1),
+            end: const Offset(0, 0),
+          ).animate(curved);
+
+          return SlideTransition(
+            position: position,
+            child: const MusicPlaylistScreen(),
+          );
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -50,6 +76,15 @@ class MusicPlayerScreen extends ConsumerWidget {
                     child: const MusicScreenBody(),
                   ),
                 ),
+              ),
+            ),
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: IconButton(
+                onPressed: () => _onTapBottom(context),
+                icon: const Icon(FontAwesomeIcons.chevronDown),
               ),
             ),
           ],
