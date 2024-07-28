@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mulink/global/extension/context_extension.dart';
 import 'package:mulink/providers/providers.dart';
+import 'package:mulink/ui/music_player_screen/layout/media_control_panel.dart';
 
-import '../component/play_state_button.dart';
 import '../component/repeat_button.dart';
 import '../component/shuffle_button.dart';
 
@@ -31,39 +30,7 @@ class PlayerControllPanel extends ConsumerWidget {
           iconSize: iconSize * 0.7,
         ),
         const SizedBox(width: 10),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            IconButton(
-              onPressed: playerNotifier.previous,
-              icon: Icon(
-                FontAwesomeIcons.backwardStep,
-                size: iconSize * 0.7,
-                color: Theme.of(context).colorScheme.inverseSurface,
-              ),
-            ),
-            const SizedBox(width: 20),
-            SizedBox(
-              width: iconSize * 1.5,
-              height: iconSize * 1.5,
-              child: PlayStateButton(
-                playButtonState: playerState.playButtonState,
-                onPlay: playerNotifier.play,
-                onPause: playerNotifier.pause,
-                buttonSize: iconSize,
-              ),
-            ),
-            const SizedBox(width: 20),
-            IconButton(
-              onPressed: playerNotifier.next,
-              icon: Icon(
-                FontAwesomeIcons.forwardStep,
-                size: iconSize * 0.7,
-                color: Theme.of(context).colorScheme.inverseSurface,
-              ),
-            ),
-          ],
-        ),
+        MediaControlPanel(iconSize: iconSize),
         const SizedBox(width: 10),
         LoopButton(
           loopState: playerState.loopState,

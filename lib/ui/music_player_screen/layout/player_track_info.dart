@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mulink/model/track.dart';
-import 'package:mulink/ui/common/overflow_marquee.dart';
 import 'package:mulink/ui/music_player_screen/component/album_cover_image.dart';
+import 'package:mulink/ui/music_player_screen/layout/media_info_marquee.dart';
 
 class PlayerTrackInfo extends StatelessWidget {
   const PlayerTrackInfo({
@@ -15,21 +15,13 @@ class PlayerTrackInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Flexible(
+        Expanded(
           child: AlbumCoverImage(
             albumCoverData: track?.albumCover,
           ),
         ),
         const SizedBox(height: 30),
-        OverflowMarquee(
-          text: track?.title ?? "<unknown>",
-          textStyle: Theme.of(context).textTheme.headlineLarge,
-        ),
-        const SizedBox(height: 10),
-        OverflowMarquee(
-          text: track?.artist ?? "<unknown>",
-          textStyle: Theme.of(context).textTheme.bodyMedium,
-        ),
+        MediaInfoMarquee(track: track),
       ],
     );
   }
