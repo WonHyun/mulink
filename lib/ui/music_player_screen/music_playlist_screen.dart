@@ -25,16 +25,16 @@ class _MusicPlaylistScreenState extends ConsumerState<MusicPlaylistScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_controller.hasClients) {
-        const itemHeight = 65.0;
-        final index = ref.read(queueProvider.notifier).currentTrackIndex;
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   if (_controller.hasClients) {
+    //     const itemHeight = 65.0;
+    //     final index = ref.read(queueProvider.notifier).currentTrackIndex;
 
-        double scrollPosition = index == 0 ? 0.0 : itemHeight * (index - 1);
+    //     double scrollPosition = index == 0 ? 0.0 : itemHeight * (index - 1);
 
-        _controller.jumpTo(scrollPosition);
-      }
-    });
+    //     _controller.jumpTo(scrollPosition);
+    //   }
+    // });
   }
 
   @override
